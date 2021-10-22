@@ -92,7 +92,7 @@ public class Game {
          * Passes turn to the next player
          *
          */
-        this.currentPlayerInteger = (this.currentPlayerInteger == this.numberOfPlayers) ? 0 : this.currentPlayerInteger + 1;
+        this.currentPlayerInteger = (this.currentPlayerInteger == this.numberOfPlayers - 1) ? 0 : this.currentPlayerInteger + 1;
         newTurn();
     }
 
