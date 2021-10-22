@@ -152,6 +152,17 @@ public class Game {
          * where n is the value which is rolled on a dice.
          *
          */
+        int x, y, z;
+        x = players.get(currentPlayerInteger).rollDice();
+        y = players.get(currentPlayerInteger).getPosition() + x;
+
+        if (board.getBoard().size() > y){
+            players.get(currentPlayerInteger).setPosition(y); // if the size of the board is greater than the position + the roll, then set the current player's position to be the current position + the roll
+        }
+        else if (board.getBoard().size() <= y) { // if the size of the board is less than the roll + the current position, then set the player's position to be
+            z = board.getBoard().size() - players.get(currentPlayerInteger).getPosition();
+            players.get(currentPlayerInteger).setPosition(board.getBoard().size() - y);
+        }
 
     }
 

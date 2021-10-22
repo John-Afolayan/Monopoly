@@ -40,6 +40,10 @@ public class Player {
         return position;
     }
 
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
     public void addProperty(Property property){
         ownedProperties.add(property);
     }
@@ -48,7 +52,7 @@ public class Player {
         return ownedProperties;
     }
 
-    private Integer rollDice() {
+    public Integer rollDice() {
         Integer numberOfDiceToRoll = 2; //rolling two dices
         List<Integer> diceRolls = new ArrayList<>();
         int dieRoll = 0;
