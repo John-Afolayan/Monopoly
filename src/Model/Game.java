@@ -161,7 +161,7 @@ public class Game {
         }
         else if (board.getBoard().size() <= y) { // if the size of the board is less than the roll + the current position, then set the player's position to be
             z = board.getBoard().size() - players.get(currentPlayerInteger).getPosition();
-            players.get(currentPlayerInteger).setPosition(board.getBoard().size() - y);
+            players.get(currentPlayerInteger).setPosition(1 + (x - z));
         }
 
     }
