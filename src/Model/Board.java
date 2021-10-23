@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Board Class: sets up the board to be played on
  * Date: October 22, 2021
- * @author Hamza Zafar, 101158275
+ * @author Hamza Zafar, 101119026
  * @version 1.0
  */
 

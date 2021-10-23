@@ -34,14 +34,22 @@ public class Game {
     }
 
 
+    /**
+     * @author John Afolayon
+     * This method prints out the current active player on the board
+     */
     private void printCurrentPlayer() {
         System.out.println("\n!*-----------------------------------------------NEW TURN!-------------------------------------------------------*!");
         System.out.println("The current player is " + players.get(currentPlayerInt).getName() + "\n");
     }
 
+    /**
+     * @author John Afolayon
+     * This method processes a command word and performs an action accordingly. If 'quit' is entered, the game quits
+     * @param command
+     * @return wantToQuit, a boolean that determines whether the game continues or not
+     */
     public boolean processCommand(Command command) {
-
-
 
         if (command.isUnknown()) {
             System.out.println("Unknown command");
@@ -56,9 +64,6 @@ public class Game {
             case "pass":
                 passTurn();
                 break;
-            case "buy":
-                buyProperty();
-                break;
             case "state":
                 printState();
                 break;
@@ -70,10 +75,12 @@ public class Game {
         return wantToQuit;
     }
 
-    private void buyProperty(){
-
-    }
-
+    /**
+     * @author John Afolayon
+     * method checks if a property is currently owned by a player
+     * @param property
+     * @return true if the property is associated with a playera
+     */
     private boolean propertyOwned(Property property){
         for (int i = 0; i < players.size(); i++){
             if (players.get(i).getOwnedProperties().contains(property)){
@@ -82,6 +89,13 @@ public class Game {
         }
         return false;
     }
+
+    /**
+     * @author John Afolayon
+     * Checks what player owns a given property
+     * @param property
+     * @return the player who owns the property
+     */
 
     private Player whoOwnsProperty(Property property){
         for (int i = 0; i < players.size(); i++){
@@ -114,6 +128,10 @@ public class Game {
         newTurn();
     }
 
+    /**
+     * @author John Afolayon
+     * This method signifys a new turn for the next player
+     */
     private void newTurn() {
         printCurrentPlayer();
         parser.showCommands();
@@ -132,31 +150,46 @@ public class Game {
         boolean correctNumberOfPlayers;
         do {
             if (numberOfPlayers <= 8 && numberOfPlayers >= 2) {
-                correctNumberOfPlayers = true;
+                correctNumberOfPlayers = true; // if the number of players is between 2 and 8, play on.
 
             } else {
-                correctNumberOfPlayers = false;
+                correctNumberOfPlayers = false; // otherwise, notify the user accordingly and get the next input
                 System.out.println("The number of players allowed is 2,3,4,5,6,7 or 8 players. Please try again.");
                 numberOfPlayers = sc.nextInt();
             }
         } while (!correctNumberOfPlayers);
-        createPlayers(numberOfPlayers);
+        createPlayers(numberOfPlayers); // create the number of players for the game
     }
 
+    /**
+     * @author John Afolayon
+     * This method initializes all of the players for the game
+     * @param numberOfPlayers
+     */
     private void createPlayers(int numberOfPlayers) {
         Scanner sc = new Scanner(System.in);
         players = new ArrayList<Player>();
         for (int i = 1; i <= numberOfPlayers; i++) {
             System.out.println("Hi player " + i + "! What would you like to call yourself?");
             this.newPlayerName = sc.next();
-            players.add(new Player(newPlayerName, i));
+            players.add(new Player(newPlayerName, i)); // gets the name of the player from the user and initializes that player
         }
     }
 
+
+    /**
+     * @author John Afolayon
+     * This method gets the list of current players
+     * @return
+     */
     public List<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * @author John Afolayon
+     * This method prints the list of players currently playing the game
+     */
     private void printListOfCurrentPlayerStats() {
         System.out.println("Player " + (currentPlayerInt + 1) + " currently owns the following properties: ");
         System.out.println(players.get(currentPlayerInt).getOwnedProperties().toString()); //Prints all properties which currentPlayer owns
@@ -177,24 +210,24 @@ public class Game {
         if (board.getBoard().size() > y){
             players.get(currentPlayerInt).setPosition(y); // if the size of the board is greater than the position + the roll, then set the current player's position to be the current position + the roll
         }
-        else if (board.getBoard().size() <= y) { // if the size of the board is less than the roll + the current position, then set the player's position to be
+        else if (board.getBoard().size() <= y) { // if the size of the board is less than the roll + the current position, then loop back to the beginning of the board and start counting from there
             z = board.getBoard().size() - players.get(currentPlayerInt).getPosition();
             players.get(currentPlayerInt).setPosition(1 + (x - z));
         }
 
-        if (board.getBoard().get(players.get(currentPlayerInt).getPosition()) instanceof Property){
+        if (board.getBoard().get(players.get(currentPlayerInt).getPosition()) instanceof Property){ // if the square on the board is a Property, then list the name of the property and the position the player is on
             System.out.println("You have rolled 2 die that combine to " + x + ". You are currently in position " + players.get(currentPlayerInt).getPosition() + ": " + ((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())).getName());
             if(!propertyOwned((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition()))){
-                promptUserToPurchase();
+                promptUserToPurchase(); // if the property has no owners, the ask the player if they would like to purchase the spot
 
             } else if(propertyOwned((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition()))){
                 taxPlayer();
-                passTurn();
+                passTurn(); // if the property is currently owned by someone, then the player pays tax/rent
             }
         }
         else if (board.getBoard().get(players.get(currentPlayerInt).getPosition())instanceof Square) {
             System.out.println("You have rolled 2 die that combine to " + x + ". You are currently in position " + players.get(currentPlayerInt).getPosition() + ": " + board.getBoard().get(players.get(currentPlayerInt).getPosition()).getName());
-            passTurn();
+            passTurn(); // if the square is a regular square, then move on as the only squares implemented in this milestone are properties
         }
     }
 
@@ -207,20 +240,20 @@ public class Game {
         System.out.println("This property is available for purchase! It costs $" + propertyPrice + " Would you like to purchase it?" +
                 "\nEnter 'yes' to purchase it or 'no' to skip this purchase.");
         Scanner sc = new Scanner(System.in);
-        String input = sc.next();
+        String input = sc.next(); // prompt player to input an answer to the question above
         if(input.equalsIgnoreCase("yes")){
             players.get(currentPlayerInt).addProperty((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition()));
             players.get(currentPlayerInt).decrementBalance(((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())).getValue());
             System.out.println("Congratulations, you now own property: " + (Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())
                     + ". Your new balance is: $" + players.get(currentPlayerInt).getBalance() + "\nSpend wisely!");
-            passTurn();
+            passTurn(); // if the answer is yes, then the player gets the property on that position
         } else if (input.equalsIgnoreCase("no")){
-            passTurn();
+            passTurn(); // if the player answers 'no', the they pass their turn to the next player
         } else {
-            System.out.println("That command isn't recognized, please try again.");
+            System.out.println("That command isn't recognized, please try again."); // command wasn't eligible
         }
         checkPlayerBalance(players.get(currentPlayerInt));
-        lookingForWinner();
+        lookingForWinner(); // the game checks the player's balance and kicks them out of the game if they are bankrupt. The game is always checking for a winner after any transaction
     }
 
     /**
@@ -235,7 +268,7 @@ public class Game {
         ownedBy.incrementBalance(amount); //add $amount to player who owns property
         System.out.println("You've been taxed $" + amount + ", your new balance is $" + players.get(currentPlayerInt).getBalance());
         checkPlayerBalance(players.get(currentPlayerInt));
-        lookingForWinner();
+        lookingForWinner(); // the game checks the player's balance and kicks them out of the game if they are bankrupt. The game is always checking for a winner after any transaction (purchase or tax)
     }
 
     /**
@@ -245,18 +278,26 @@ public class Game {
     public void checkPlayerBalance(Player player){
         int balance = player.getBalance();
         if (balance <= 0){
-            removeBankruptPlayer();
+            removeBankruptPlayer(); // if the player's balance is negative, they lose and are kicked from the game
             System.out.println("You are now bankrupt! You have been kicked out of the game. Too bad...");
         }
     }
 
+    /**
+     * @author Ibrahim Said
+     * Method checks for a potential winner of the game
+     */
     public void lookingForWinner(){
         if (players.size() == 1){
             System.out.println(players.get(0).getName() + " has won the game! Congratulations");
-            System.exit(0);
+            System.exit(0); // if only one player remains in the list, then that player wins the game and the game closes
         }
     }
 
+    /**
+     * @author John Afolayan
+     * The method removes a player when their balance dips below zero (bankcruptcy)
+     */
     public void removeBankruptPlayer(){
         for (final Iterator<Player> iterator = players.iterator(); iterator.hasNext();) {
             Player temp = iterator.next();
