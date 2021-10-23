@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class CommandWords {
     private static final String[] validCommands = {
-            "move","buy", "pass","quit", "state"
+            "move", "pass","quit", "state"
     };
     public void printCommands(){
         System.out.println(Arrays.deepToString(validCommands));

@@ -19,7 +19,6 @@ public class Board {
     }
 
     public void buildBoard(){
-
         board.add(0, new Square("Go!"));
         board.add(1, new Property("Carleton University", "brown", 200));
         board.add(2, new Property("123 Street", "brown", 200));
@@ -32,8 +31,6 @@ public class Board {
         board.add(9, new Property("Airport", "purple", 700));
         board.add(10, new Property("Hawaii", "blue", 600));
         board.add(11, new Square("empty"));
-
-
     }
 
     public ArrayList<Square> getBoard() {
