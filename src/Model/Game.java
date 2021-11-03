@@ -183,6 +183,9 @@ public class Game {
         x = players.get(currentPlayerInt).rollDice();
         y = players.get(currentPlayerInt).getPosition() + x;
 
+        players.get(currentPlayerInt).setPosition(y % 40);
+
+        /*
         if (board.getBoard().size() > y){
             players.get(currentPlayerInt).setPosition(y); // if the size of the board is greater than the position + the roll, then set the current player's position to be the current position + the roll
         }
@@ -190,6 +193,7 @@ public class Game {
             z = board.getBoard().size() - players.get(currentPlayerInt).getPosition();
             players.get(currentPlayerInt).setPosition(1 + (x - z));
         }
+        */
 
         if (board.getBoard().get(players.get(currentPlayerInt).getPosition()) instanceof Property){
             System.out.println("You have rolled 2 die that combine to " + x + ". You are currently in position " + players.get(currentPlayerInt).getPosition() + ": " + ((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())).getName());
