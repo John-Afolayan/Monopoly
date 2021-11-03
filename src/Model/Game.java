@@ -23,7 +23,7 @@ public class Game {
     private Property property;
     private int currentPlayerInt = 0;
     private List<Player> players;
-
+    private ModelUpdateListener viewer;
     private int numberOfPlayers;
     private String newPlayerName;
     private InputStream inputStream;
@@ -143,6 +143,15 @@ public class Game {
         createPlayers(numberOfPlayers);
     }
 
+    private void update() {
+        if (this.viewer != null)
+            this.viewer.modelUpdated();
+    }
+
+    public void setViewer(ModelUpdateListener viewer) {
+        this.viewer = viewer;
+    }
+
     private void createPlayers(int numberOfPlayers) {
         Scanner sc = new Scanner(System.in);
         players = new ArrayList<Player>();
@@ -229,13 +238,15 @@ public class Game {
      */
     public void taxPlayer(){
         Player ownedBy = whoOwnsProperty((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())); //player who owns property
-        int amount = (int) (((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())).getValue() * 0.1); //amount to decrement by, 10%
-        System.out.printf("You've landed on a property owned by another player: %s%n", ownedBy.getName());
-        players.get(currentPlayerInt).decrementBalance(amount); //remove $amount from player being taxed
-        ownedBy.incrementBalance(amount); //add $amount to player who owns property
-        System.out.println("You've been taxed $" + amount + ", your new balance is $" + players.get(currentPlayerInt).getBalance());
-        checkPlayerBalance(players.get(currentPlayerInt));
-        lookingForWinner();
+        if(!ownedBy.equals(players.get(currentPlayerInt))){ //If current player who lands on property doesn't own that property, tax them.
+            int amount = (int) (((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())).getValue() * 0.1); //amount to decrement by, 10%
+            System.out.printf("You've landed on a property owned by another player: %s%n", ownedBy.getName());
+            players.get(currentPlayerInt).decrementBalance(amount); //remove $amount from player being taxed
+            ownedBy.incrementBalance(amount); //add $amount to player who owns property
+            System.out.println("You've been taxed $" + amount + ", your new balance is $" + players.get(currentPlayerInt).getBalance());
+            checkPlayerBalance(players.get(currentPlayerInt));
+            lookingForWinner();
+        }
     }
 
     /**
