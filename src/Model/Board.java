@@ -1,17 +1,19 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Board Class: sets up the board to be played on
- * Date: October 22, 2021
+ * Date: November 5th, 2021
  * @author Hamza Zafar, 101158275
- * @version 1.0
+ * @version 2.0
  */
 
 public class Board {
 
     private ArrayList<Square> board;
+    private List<Player> players;
 
     public Board(){
         board = new ArrayList<>();
@@ -35,5 +37,21 @@ public class Board {
 
     public ArrayList<Square> getBoard() {
         return board;
+    }
+
+    public int size(){
+        return board.size();
+    }
+
+    public Square getIndex(int x){
+        return board.get(x);
+    }
+
+    public Property getProperty(int x){
+        return (Property) board.get(players.get(x).getPosition());
+    }
+
+    public int getPrice(int x){
+        return ((Property) board.get(players.get(x).getPosition())).getValue();
     }
 }
