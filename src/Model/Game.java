@@ -104,7 +104,7 @@ public class Game {
                 + players.get(currentPlayerInt).getOwnedProperties().toString() + "\nYour current balance is " + players.get(currentPlayerInt).getBalance());
     }
 
-    private void passTurn() {
+    public void passTurn() {
         /**
          * @author John Afolayan
          *
