@@ -52,7 +52,7 @@ public class Game {
         String commandWord = command.getCommandWord();
         switch (commandWord) {
             case "move":
-                moveToken();
+                moveToken(players.get(currentPlayerInt).rollDice());
                 break;
             case "pass":
                 passTurn();
@@ -104,7 +104,7 @@ public class Game {
                 + players.get(currentPlayerInt).getOwnedProperties().toString() + "\nYour current balance is " + players.get(currentPlayerInt).getBalance());
     }
 
-    public void passTurn() {
+    private void passTurn() {
         /**
          * @author John Afolayan
          *
@@ -164,7 +164,13 @@ public class Game {
         System.out.println(players.get(currentPlayerInt).getOwnedProperties().toString()); //Prints all properties which currentPlayer owns
     }
 
-    private void moveToken() {
+    public int rollDie(Player player){
+        int x;
+        x = player.rollDice();
+        return x;
+    }
+
+    public void moveToken(int rollNum) {
         /**
          * @author John Afolayan and Ibrahim Said
          *
@@ -173,9 +179,10 @@ public class Game {
          *
          */
         int x, y, z;
-        x = players.get(currentPlayerInt).rollDice();
-        y = players.get(currentPlayerInt).getPosition() + x;
-        players.get(currentPlayerInt).setPosition(y%40); // if the size of the board is greater than the board size (40), then set the current player's position to be the difference
+        rollNum = this.rollDie(players.get(currentPlayerInt));
+
+        y = players.get(currentPlayerInt).getPosition() + rollNum;
+        players.get(currentPlayerInt).setPosition(y%11); // if the size of the board is greater than the board size (11), then set the current player's position to be the difference
 
         /*
         if (board.getBoard().size() > y){
@@ -187,18 +194,18 @@ public class Game {
         }
         */
 
-        if (board.getBoard().get(players.get(currentPlayerInt).getPosition()) instanceof Property){
-            System.out.println("You have rolled 2 die that combine to " + x + ". You are currently in position " + players.get(currentPlayerInt).getPosition() + ": " + ((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())).getName());
-            if(!propertyOwned((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition()))){
+        if (board.getIndex(players.get(currentPlayerInt).getPosition()) instanceof Property){
+            System.out.println("You have rolled 2 die that combine to " + rollNum + ". You are currently in position " + players.get(currentPlayerInt).getPosition() + ": " + ((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())).getName());
+            if(!propertyOwned((Property) board.getIndex(players.get(currentPlayerInt).getPosition()))){
                 promptUserToPurchase();
                 checkPlayerBalance(players.get(currentPlayerInt));
-            } else if(propertyOwned((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition()))){
+            } else if(propertyOwned((Property) board.getIndex(players.get(currentPlayerInt).getPosition()))){
                 taxPlayer();
                 passTurn();
             }
         }
-        else if (board.getBoard().get(players.get(currentPlayerInt).getPosition())instanceof Square) {
-            System.out.println("You have rolled 2 die that combine to " + x + ". You are currently in position " + players.get(currentPlayerInt).getPosition() + ": " + board.getBoard().get(players.get(currentPlayerInt).getPosition()).getName());
+        else if (board.getIndex(players.get(currentPlayerInt).getPosition())instanceof Square) {
+            System.out.println("You have rolled 2 die that combine to " + rollNum + ". You are currently in position " + players.get(currentPlayerInt).getPosition() + ": " + board.getBoard().get(players.get(currentPlayerInt).getPosition()).getName());
             passTurn();
         }
     }
@@ -208,15 +215,15 @@ public class Game {
      * A method to prompt a user to purchase a property or not
      */
     public void promptUserToPurchase(){
-        int propertyPrice = ((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())).getValue();
+        int propertyPrice = ((Property) board.getIndex(players.get(currentPlayerInt).getPosition())).getValue();
         System.out.println("This property is available for purchase! It costs $" + propertyPrice + " Would you like to purchase it?" +
                 "\nEnter 'yes' to purchase it or 'no' to skip this purchase.");
         Scanner sc = new Scanner(System.in);
         String input = sc.next();
         if(input.equalsIgnoreCase("yes")){
-            players.get(currentPlayerInt).addProperty((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition()));
-            players.get(currentPlayerInt).decrementBalance(((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())).getValue());
-            System.out.println("Congratulations, you now own property: " + (Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())
+            players.get(currentPlayerInt).addProperty((Property) board.getIndex(players.get(currentPlayerInt).getPosition()));
+            players.get(currentPlayerInt).decrementBalance(((Property) board.getIndex(players.get(currentPlayerInt).getPosition())).getValue());
+            System.out.println("Congratulations, you now own property: " + (Property) board.getIndex(players.get(currentPlayerInt).getPosition())
                     + ". Your new balance is: $" + players.get(currentPlayerInt).getBalance() + "\nSpend wisely!");
             passTurn();
         } else if (input.equalsIgnoreCase("no")){
@@ -233,9 +240,9 @@ public class Game {
      * This method taxes a player whenver they land on another player's property
      */
     public void taxPlayer(){
-        Player ownedBy = whoOwnsProperty((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())); //player who owns property
+        Player ownedBy = whoOwnsProperty((Property) board.getIndex(players.get(currentPlayerInt).getPosition())); //player who owns property
         if(!ownedBy.equals(players.get(currentPlayerInt))){ //If current player who lands on property doesn't own that property, tax them.
-            int amount = (int) (((Property) board.getBoard().get(players.get(currentPlayerInt).getPosition())).getValue() * 0.1); //amount to decrement by, 10%
+            int amount = (int) (((Property) board.getIndex(players.get(currentPlayerInt).getPosition())).getValue() * 0.1); //amount to decrement by, 10%
             System.out.printf("You've landed on a property owned by another player: %s%n", ownedBy.getName());
             players.get(currentPlayerInt).decrementBalance(amount); //remove $amount from player being taxed
             ownedBy.incrementBalance(amount); //add $amount to player who owns property
