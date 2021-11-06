@@ -3,7 +3,6 @@ package Controller;
 import Game.Command;
 import Model.Game;
 import View.View;
-import Model.Player;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +13,6 @@ import java.util.List;
 public class Controller implements ActionListener {
     View gameView;
     Game gameModel;
-    Player player;
 
     public Controller(Game gameModel, View gameView) {
         this.gameModel = gameModel;
@@ -38,10 +36,10 @@ public class Controller implements ActionListener {
 
                 break;
             case "Pass Turn":
-                gameView.setFeedbackArea("Player # " + player.getName() + " has passed their turn");
+                gameView.setFeedbackArea("Player # " + gameModel.getCurrentPlayer().getPlayerNumber() + " has passed their turn");
                 gameModel.passTurn();
                 gameView.setFeedbackArea("\n!*-----------------------------------------------NEW TURN!-------------------------------------------------------*!");
-                gameView.setFeedbackArea(player.getName()+ "it is now your turn");
+                gameView.setFeedbackArea(gameModel.getCurrentPlayer().getPlayerNumber() + "it is now your turn");
                 goToTheBottomOfTextField();
 
 
