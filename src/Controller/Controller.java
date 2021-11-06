@@ -38,8 +38,7 @@ public class Controller implements ActionListener {
             case "Pass Turn":
                 gameView.setFeedbackArea("Player # " + gameModel.getCurrentPlayer().getPlayerNumber() + " has passed their turn");
                 gameModel.passTurn();
-                gameView.setFeedbackArea("\n!*-----------------------------------------------NEW TURN!-------------------------------------------------------*!");
-                gameView.setFeedbackArea(gameModel.getCurrentPlayer().getPlayerNumber() + "it is now your turn");
+                gameView.setFeedbackArea("\n" + gameModel.getCurrentPlayer().getPlayerNumber() + " it is now your turn");
                 goToTheBottomOfTextField();
 
 
