@@ -12,10 +12,9 @@ import java.util.Scanner;
 
 
 /**
- * @author John Afolayan
- * <p>
- * This main class creates and initialises all the others. This class acts the Controller.
- * It creates the parser and starts the game.
+ * @author John Afolayan, Hamza Jafar, Ibrahim Said
+ * @version 1.1
+ * This class acts as the Model of the game. Contains the contents of the user interface.
  * It also evaluates and executes the commands that the parser returns.
  */
 

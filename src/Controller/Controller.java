@@ -10,14 +10,27 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller Class: Controls the flow of data between the actor, View, and Model
+ * @author Ibrahim Said, Hamza Jafar, John Afolayon
+ * @Version 1.0
+ */
+
 public class Controller implements ActionListener {
     View gameView;
     Game gameModel;
 
+    // class constructor
     public Controller(Game gameModel, View gameView) {
         this.gameModel = gameModel;
         this.gameView = gameView;
     }
+
+    /**
+     * Determines the action to be performed after the event of a button is triggered
+     * @author John Afolayon, Ibrahim Said, Hamza Jafar
+     * @param e
+     */
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -59,6 +72,10 @@ public class Controller implements ActionListener {
         }
     }
 
+    /**
+     * Displays the text at the bottom of the textfield of the view
+     * @author John Afolayon
+     */
     private void goToTheBottomOfTextField() {
         gameView.getFeedbackArea().getCaret().setDot(Integer.MAX_VALUE);
     }

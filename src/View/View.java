@@ -13,6 +13,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+/**
+ * View class that displays the contents of the game
+ * @author John Afolayon, Ibrahim Said, Hamza Jafar
+ * @version 1.0
+ */
+
 public class View extends JFrame implements ModelUpdateListener {
     Game gameModel;
     JButton newGameButton;
@@ -38,6 +44,11 @@ public class View extends JFrame implements ModelUpdateListener {
         gameView.initialize(gameController);
     }
 
+    /**
+     * Prompts the number of players from the user
+     * @param choices
+     * @return number of players playing Monopoly
+     */
     static int askUser(Integer[] choices) {
         Integer s = (Integer) JOptionPane.showInputDialog(
                 null,
@@ -50,13 +61,17 @@ public class View extends JFrame implements ModelUpdateListener {
         return s;
     }
 
+    /**
+     * Initializes all the Swing components of the GUI
+     * @author John Afolayon
+     */
+
     public void Initialize() {
         /*MyPanel a functionality I (John)
         was working on to show each player
         on the GUI board using a color pixel
         but did not have success with
         I may try again later.
-
         panel = new MyPanel();
         this.add(panel);
         this.pack();*/
@@ -148,6 +163,10 @@ public class View extends JFrame implements ModelUpdateListener {
 
     }
 
+    /**
+     Unlocks the buttons for use after a new game is initialized
+     @author John Afolayon
+     */
     public void unlockButtons() {
         for (JButton button : listOfCommandButtons) {
             button.setEnabled(true);
