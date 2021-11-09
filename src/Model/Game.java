@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 
 /**
- * @author John Afolayan, Hamza Jafar, Ibrahim Said
+ * @author John Afolayan, Hamza Zafar, Ibrahim Said
  * @version 1.1
  * This class acts as the Model of the game. Contains the contents of the user interface.
  * It also evaluates and executes the commands that the parser returns.

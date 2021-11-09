@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Controller Class: Controls the flow of data between the actor, View, and Model
- * @author Ibrahim Said, Hamza Jafar, John Afolayon
+ * @author Ibrahim Said, Hamza Zafar, John Afolayon
  * @Version 1.0
  */
 
@@ -28,7 +28,7 @@ public class Controller implements ActionListener {
 
     /**
      * Determines the action to be performed after the event of a button is triggered
-     * @author John Afolayon, Ibrahim Said, Hamza Jafar
+     * @author John Afolayon, Ibrahim Said, Hamza Zafar
      * @param e
      */
 

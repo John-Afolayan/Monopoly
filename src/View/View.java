@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 /**
  * View class that displays the contents of the game
- * @author John Afolayon, Ibrahim Said, Hamza Jafar
+ * @author John Afolayon, Ibrahim Said, Hamza Zafar
  * @version 1.0
  */
 
