@@ -42,6 +42,7 @@ public class Game {
     boolean ableToPurchaseBrown = false;
     boolean ableToPurchaseYellow = false;
 
+
     public Game() {
         parser = new Parser();
         players = new ArrayList<>();
