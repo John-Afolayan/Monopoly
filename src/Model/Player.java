@@ -41,7 +41,6 @@ public class Player {
         this.previousPosition = 0;
     }
 
-
     public ArrayList<House> getOwnedHouses() {
         return ownedHouses;
     }
@@ -224,7 +223,7 @@ public class Player {
             diceRolls.add(diceRoll);
             dieRoll += diceRoll;
         }
-        if(dieRoll >=0) {
+        if(dieRoll >=0){
             return dieRoll;
         } else {
             rollDice();

@@ -16,6 +16,7 @@ import java.util.List;
 public class Controller implements ActionListener {
     View gameView;
     Game gameModel;
+    int numberOfPlayers, numberOfAIPlayers, initialNumberOfPlayers;;
 
     public Controller(Game gameModel, View gameView) {
         this.gameModel = gameModel;
@@ -26,7 +27,9 @@ public class Controller implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "New Game":
-                int numberOfPlayers = gameView.numberOfPlayersRequest();
+                initialNumberOfPlayers = gameView.numberOfPlayersRequest();
+                numberOfPlayers = gameView.numberOfPlayersRequest();
+                numberOfAIPlayers= gameView.numberOfAIPlayersRequest(numberOfPlayers);
                 gameModel.initializePlayers(numberOfPlayers);
                 gameView.unlockButtons();
                 gameView.setFeedbackArea("A new game has begun with " + numberOfPlayers + " players\n" + "\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
