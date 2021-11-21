@@ -791,8 +791,8 @@ public class View extends JFrame implements ModelUpdateListener {
      * This method checks if a player has won the game.
      */
     public void lookingForWinner(){
-        if (gameModel.getPlayers().size() == 1){
-            JOptionPane.showMessageDialog(null, "Player " + gameModel.getPlayers().get(0).getPlayerNumber() + " has won the game! Congratulations");
+        if (gameModel.getHumanPlayers().size() == 1){
+            JOptionPane.showMessageDialog(null, "Player " + gameModel.getHumanPlayers().get(0).getPlayerNumber() + " has won the game! Congratulations");
             System.exit(0);
         }
     }
