@@ -791,9 +791,13 @@ public class View extends JFrame implements ModelUpdateListener {
      * This method checks if a player has won the game.
      */
     public void lookingForWinner(){
-        if (gameModel.getHumanPlayers().size() == 1){
-            JOptionPane.showMessageDialog(null, "Player " + gameModel.getHumanPlayers().get(0).getPlayerNumber() + " has won the game! Congratulations");
+        if (gameModel.getPlayerList().size() == 1){
+            JOptionPane.showMessageDialog(null, "Player " + gameModel.getPlayerList().get(0).getPlayerNumber() + " has won the game! Congratulations");
             System.exit(0);
+        } else if(gameModel.getCurrentPlayer().getBalance() <0) {
+            //JOptionPane.showMessageDialog(null, "Player " + gameModel.getCurrentPlayer().getPlayerNumber() + ", you are bankrupt and therefore eliminated.");
+            //setFeedbackArea("\nPlayer " + gameModel.getCurrentPlayer().getPlayerNumber() + ", you are bankrupt and therefore eliminated.\n");
+            //gameModel.removeBankruptPlayer();
         }
     }
 
@@ -885,10 +889,11 @@ public class View extends JFrame implements ModelUpdateListener {
 
     public int numberOfAIPlayersRequest(int numberOfPlayers) {
         if(numberOfPlayers != 8) {
-            Integer[] choices = new Integer[8 - numberOfPlayers];
+            Integer[] choices = new Integer[9 - numberOfPlayers];
+            choices[0] = 0;
             int index = 7 - numberOfPlayers;
             for (int i = numberOfPlayers; i < 8; i++) {
-                choices[index] = 8 - i;
+                choices[index+1] = 8 - i;
                 index--;
             }
             int choice = askUserAboutAI(choices);

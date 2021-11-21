@@ -36,7 +36,7 @@ public class Player {
     public Player(int playerNumber){
         //this.name = name;
         this.playerNumber = playerNumber;
-        this.balance = 1500; //default starting balance
+        this.balance = 50; //default starting balance
         this.position = 0; //start at the first square
         this.previousPosition = 0;
     }
