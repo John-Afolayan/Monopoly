@@ -29,6 +29,7 @@ public class Game {
     private Railroad railroad;
     private ModelUpdateListener viewer;
     private int numberOfPlayers;
+    private int numberOfAIPlayers;
     private String newPlayerName;
     private InputStream inputStream;
     private Board board = new Board();
@@ -41,11 +42,16 @@ public class Game {
     boolean ableToPurchaseOrange = false;
     boolean ableToPurchaseBrown = false;
     boolean ableToPurchaseYellow = false;
+    private List<Player> aiPlayers;
+    private Player currentAIPlayer;
+
+
 
 
     public Game() {
         parser = new Parser();
         players = new ArrayList<>();
+        aiPlayers = new ArrayList<>();
     }
 
     public boolean isAbleToPurchaseBlue() {
@@ -200,7 +206,7 @@ public class Game {
 
     public Player whoOwnsRailroad(Railroad railroad) {
         for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getOwnedUtility().contains(railroad)) {
+            if (players.get(i).getOwnedRailroads().contains(railroad)) {
                 return players.get(i);
             }
         }
@@ -262,6 +268,12 @@ public class Game {
         this.currentPlayer = players.get(0);
     }
 
+    public void initializeAIPlayers(int numberOfAIPlayers) {
+        this.numberOfAIPlayers = numberOfAIPlayers;
+        createAIPlayers(numberOfAIPlayers);
+        this.currentAIPlayer = aiPlayers.get(0);
+    }
+
     private void update() {
         if (this.viewer != null)
             this.viewer.modelUpdated();
@@ -269,6 +281,13 @@ public class Game {
 
     public void setViewer(ModelUpdateListener viewer) {
         this.viewer = viewer;
+    }
+
+    public void createAIPlayers(int numberOfAIPlayers){
+        aiPlayers = new ArrayList<Player>();
+        for (int i = 1; i <= numberOfAIPlayers; i++){
+            aiPlayers.add(new Player(i));
+        }
     }
 
     /**
@@ -284,6 +303,14 @@ public class Game {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public void mergingPlayersList(){
+        players.addAll(aiPlayers);
+    }
+
+    public List<Player> getAIPlayers(){
+        return aiPlayers;
     }
 
     public int rollDie(){
@@ -426,6 +453,10 @@ public class Game {
                 this.currentPlayerInt -= 1;
             }
         }
+    }
+
+    public int getCurrentPlayerInt() {
+        return currentPlayerInt;
     }
 
     /**

@@ -897,4 +897,8 @@ public class View extends JFrame implements ModelUpdateListener {
         return 0;
     }
 
+    public void AIPropertyPurchase(){
+
+    }
+
 }

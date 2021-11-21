@@ -26,6 +26,10 @@ public class Player {
     int orangeProperties = 0;
     int redProperties = 0;
 
+    public enum Status {Human, AI};
+
+    private Status status;
+
     private ArrayList<Property> ownedProperties = new ArrayList<>();
     private ArrayList<House> ownedHouses = new ArrayList<>();
     private ArrayList<Hotel> ownedHotels = new ArrayList<>();
@@ -39,10 +43,19 @@ public class Player {
         this.balance = 1500; //default starting balance
         this.position = 0; //start at the first square
         this.previousPosition = 0;
+        status = Status.Human;
     }
 
     public ArrayList<House> getOwnedHouses() {
         return ownedHouses;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     public ArrayList<Hotel> getOwnedHotels() {
