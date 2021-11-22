@@ -304,6 +304,7 @@ public class Game {
     }
 
     public void freePlayerFromJail(){
+        getCurrentPlayer().decrementBalance(50);
         getCurrentPlayer().setPosition(10); //Sets player position to just visiting jail.
     }
 
@@ -1279,21 +1280,32 @@ public class Game {
             }
         }
         else if (playerIsInJail() && !isPlayerAnAI()){
-            //TODO
-        }
-        while (isPlayerAnAI()){
-            try {
-                while (isPlayerAnAI()){
-                    for (ModelUpdateListener v: views){
-                        v.AIRepaint();
-                    }
-                    passTurn();
-                    Thread.sleep(1);
+            String str = "";
+            for (ModelUpdateListener v: views){
+                str = v.jailActionUpdate();
+            }
+            if (str.equals("yes")){
+                freePlayerFromJail();
+                for (ModelUpdateListener v: views){
+                    v.leavingJail();
                 }
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
+            }
+            else {
+                for (ModelUpdateListener v: views){
+                    v.stayingInJail();
+                }
+                passTurn();
             }
         }
+        while (isPlayerAnAI()){
+            for (ModelUpdateListener v: views){
+                v.AIRepaint();
+            }
+            passTurn();
+
+        }
+
+
         checkPlayerBalance(getCurrentPlayer());
         lookingForWinner();
 

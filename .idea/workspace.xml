@@ -3,13 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="90a0b1b4-e1b3-4816-a2c8-c7323432a091" name="Default Changelist" comment="Fixed small bug that would wait until the player's next turn to determine if they are bankrupt.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Monopoly.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Monopoly.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Monopoly/Controller/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Monopoly/Controller/Controller.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Monopoly/Model/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Monopoly/Model/Game.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Monopoly/Model/Game.java.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Monopoly/Model/ModelUpdateListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Monopoly/Model/ModelUpdateListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Monopoly/Model/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Monopoly/Model/Player.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Monopoly/View/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Monopoly/View/View.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GameModelTest/GameTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameModelTest/GameTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Game.java.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/ModelUpdateListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ModelUpdateListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -432,7 +439,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637608007776</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Fixed small bug that would wait until the player's next turn to determine if they are bankrupt.">
+      <created>1637613133175</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1637613133175</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

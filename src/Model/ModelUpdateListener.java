@@ -57,6 +57,13 @@ public interface ModelUpdateListener {
 
     void cannotSellHotel();
 
+    String jailActionUpdate();
+
+    void leavingJail();
+
+    void stayingInJail();
+
+
 
     void sellingHouse();
 }

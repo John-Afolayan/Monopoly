@@ -1,5 +1,5 @@
-/*
 package GameModelTest;
+/*
 
 import Model.Game;
 import Model.Player;
@@ -27,8 +27,8 @@ public class GameTest {
 
     @Test
     public void testNumOfInitializedPlayers(){
-        game.initializePlayers(2);
-        assertEquals(2, game.getHumanPlayers().size());
+        game.initializePlayers(2, 4);
+        assertEquals(6, game.getPlayers().size());
     }
 
     @Test
@@ -45,15 +45,13 @@ public class GameTest {
         assertEquals(5, game.getCurrentPlayerPosition());
     }
 
-    */
-/*
+
     @Test
     public void testPromptingPlayerPurchase(){
         game.startGame(3);
         game.moveToken();
         assertEquals(1, game.getCurrentPlayer().getOwnedProperties().size());
     }
-     *//*
 
 
     @Test
@@ -63,17 +61,17 @@ public class GameTest {
         game.removeBankruptPlayer();
         assertEquals(2, game.getHumanPlayers().size());
     }
-*/
-/*
+
     @Test
     public void testSearchForAWinner(){
         game.startGame(2);
         game.getCurrentPlayer().setBalance(-100);
         game.checkPlayerBalance(game.getCurrentPlayer());
         assertEquals(1, game.getPlayers().size());
-    }*//*
-
+    }
 
 
 }
-*/
+
+
+ */

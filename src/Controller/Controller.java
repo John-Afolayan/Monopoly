@@ -33,6 +33,7 @@ public class Controller implements ActionListener {
                 break;
             case "Roll Die":
                 int diceRoll = gameModel.rollDie();
+                System.out.println(gameModel.playerIsInJail());
                 gameView.repaint();
                 gameModel.checkSquare(diceRoll);
 

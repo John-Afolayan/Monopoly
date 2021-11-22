@@ -500,6 +500,28 @@ public class View extends JFrame implements ModelUpdateListener {
     }
 
     @Override
+    public String jailActionUpdate() {
+        lockRollButton();
+        String input = JOptionPane.showInputDialog(this, "Player " + gameModel.getCurrentPlayer().getPlayerNumber() + ": You are in Jail. Would you like to pay $50 bail to leave? Enter yes to pay bail or no to stay in jail.");
+        return input;
+    }
+
+    @Override
+    public void leavingJail() {
+        setFeedbackArea("\nYou have left Jail!");
+        unlockRollDieButton();
+        repaint();
+    }
+
+    @Override
+    public void stayingInJail() {
+        unlockRollDieButton();
+        setFeedbackArea("\nYikes :/ another night in jail doesn't sound fun. Good luck.");
+        repaint();
+    }
+
+
+    @Override
     public void sellingHouse() {
 
     }
