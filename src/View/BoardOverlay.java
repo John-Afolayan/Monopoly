@@ -199,13 +199,15 @@ public class BoardOverlay extends JPanel {
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         //Draw a circle for the amount of players in the game
-        for (int i = 0; i < game.getHumanPlayers().size(); i++) {
-            int intPos = game.getHumanPlayers().get(i).getPosition(); //Get the integer position of the current player
-            String positionName = game.getBoard().getIndex(intPos).getName(); //Get the name of the square which player is currently on
-            if (boardLocations.containsKey(positionName)) {
-                graphics.drawOval(boardLocations.get(positionName).x, boardLocations.get(positionName).y, getWidth() / 30, getHeight() / 30);
-                graphics.fillOval(boardLocations.get(positionName).x, boardLocations.get(positionName).y, getWidth() / 30, getHeight() / 30);
-                graphics.setColor(setPlayerColor(game.getHumanPlayers().get(i).getPlayerNumber())); //Passes player's number as parameter for getPlayerColor() which has a player's assigned color
+        for (int i = 0; i < game.getPlayerList().size(); i++) {
+            if (game.getPlayerList().get(i).getBalance() > 0) {
+                int intPos = game.getPlayerList().get(i).getPosition(); //Get the integer position of the current player
+                String positionName = game.getBoard().getIndex(intPos).getName(); //Get the name of the square which player is currently on
+                if (boardLocations.containsKey(positionName)) {
+                    graphics.drawOval(boardLocations.get(positionName).x, boardLocations.get(positionName).y, getWidth() / 30, getHeight() / 30);
+                    graphics.fillOval(boardLocations.get(positionName).x, boardLocations.get(positionName).y, getWidth() / 30, getHeight() / 30);
+                    graphics.setColor(setPlayerColor(game.getPlayerList().get(i).getPlayerNumber())); //Passes player's number as parameter for getPlayerColor() which has a player's assigned color
+                }
             }
         }
     }

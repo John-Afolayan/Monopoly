@@ -40,7 +40,7 @@ public class Player {
     public Player(int playerNumber){
         //this.name = name;
         this.playerNumber = playerNumber;
-        this.balance = 1500; //default starting balance
+        this.balance = 500; //default starting balance
         this.position = 0; //start at the first square
         this.previousPosition = 0;
         status = Status.Human;
@@ -237,7 +237,7 @@ public class Player {
             dieRoll += diceRoll;
         }
         if(dieRoll >=0){
-            return 1;
+            return dieRoll;
         } else {
             rollDice();
         }

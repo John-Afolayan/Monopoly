@@ -46,7 +46,7 @@ public class Board {
         board.add(22, new Square("empty 4"));
         board.add(23, new Property("Indiana Ave", "red", 220));
         board.add(24, new Property("Illinois Ave", "red", 240));
-        board.add(25, new Railroad("B & O Railroad", 200));
+        board.add(25, new Railroad("B. & O. Railroad", 200));
         board.add(26, new Property("Atlantic Ave", "yellow", 260));
         board.add(27, new Property("Ventnor Ave", "yellow", 260));
         board.add(28, new Utility("Water Works", 150));
@@ -73,13 +73,6 @@ public class Board {
 
     public Square getIndex(int x){
         return board.get(x);
-    }
-
-    public Property getProperty(int x){
-        return (Property) board.get(players.get(x).getPosition());
-    }
-    public Utility getUtility(int x){
-        return (Utility) board.get(players.get(x).getPosition());
     }
 
     public int getPrice(int x){
