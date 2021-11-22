@@ -249,7 +249,7 @@ public class Game {
          * Print a representation of the game's state
          *
          */
-        return("\nThere are " + playerList.size() + " active players in the game currently and you are player " + (currentPlayerInt + 1) + ".\nYou own the following properties: "
+        return("\nThere are " + playerList.size() + " active players in the game currently and you are player " + getCurrentPlayer().getPlayerNumber() + ".\nYou own the following properties: "
                 + getCurrentPlayer().getOwnedProperties().toString() + "\nYour current balance is $" + getCurrentPlayer().getBalance() + " and your color on the board is " + BoardOverlay.getPlayerColor(currentPlayerInt + 1));
     }
 
@@ -336,7 +336,7 @@ public class Game {
         if (isPlayerAnAI() && getCurrentPlayer().getBalance() > 0 && getCurrentPlayer().getPosition() != 30) {
             hasPlayerPassedGo();
             int diceroll1 = getCurrentPlayer().rollDice(); //roll first die
-            int diceroll2 = 0; //roll second die
+            int diceroll2 = getCurrentPlayer().rollDice(); //roll second die
             int totalDiceroll = diceroll1 + diceroll2; //add two die together
             getCurrentPlayer().setPosition(totalDiceroll+getCurrentPlayerPosition()); //move AI player to position specified by die
 
@@ -447,7 +447,7 @@ public class Game {
             getCurrentPlayer().decrementBalance(100);
             return 200;
         }
-        return -1;
+        return 0;
     }
 
     /**
@@ -521,12 +521,12 @@ public class Game {
         for (final Iterator<Player> iterator = playerList.iterator(); iterator.hasNext();) {
             Player temp = iterator.next();
             if (temp.getBalance() <= 0) {
-                iterator.remove();
                 if(index > numberOfHumanPlayers){
                     numberOfAIPlayers -= 1;
                 } else if(index <= numberOfHumanPlayers){
                     numberOfHumanPlayers -= 1;
                 }
+                iterator.remove();
                 this.totalNumberOfPlayers -= 1;
                 this.currentPlayerInt -= 1;
             }

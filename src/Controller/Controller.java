@@ -34,14 +34,13 @@ public class Controller implements ActionListener {
                 gameView.getNewGameButton().setEnabled(false);
                 break;
             case "Roll Die":
-                //int diceRoll1 = gameModel.rollDie();
                 int diceRoll1 = gameModel.rollDie();
-                int diceRoll2 = 11;
-                if(!gameModel.playerIsInJail()) { //If player is not in jail, then roll die is allowed.
+                int diceRoll2 = gameModel.rollDie();
+                if(!gameModel.playerIsInJail() && !gameModel.isPlayerAnAI()) { //If player is not in jail, then roll die is allowed.
                     gameModel.setCurrentPlayerPosition(diceRoll1 + diceRoll2);
                     gameView.repaint();
                     int pos = gameModel.getCurrentPlayerPosition();
-                    gameView.setFeedbackArea("\nPlayer " + gameModel.getCurrentPlayer().getPlayerNumber() + ": You have rolled two die that have added up to " + diceRoll1 + diceRoll2);
+                    gameView.setFeedbackArea("\nPlayer " + gameModel.getCurrentPlayer().getPlayerNumber() + ": You have rolled two die that have added up to " + (diceRoll1 + diceRoll2));
                     gameView.setFeedbackArea("\nYour new position is now " + pos + ": " + gameModel.getBoardName());
                     if(gameModel.hasPlayerPassedGo()){
                         gameView.setFeedbackArea("\nCongratulations, you've passed GO! Your balance has increased by $200.");
@@ -75,12 +74,6 @@ public class Controller implements ActionListener {
                             int tax = gameModel.getUtilityRent(diceRoll1 + diceRoll2);
                             gameView.taxUtility(tax);
                             gameModel.passTurn();
-                            while(gameModel.getCurrentPlayer().getPlayerNumber()>(initialNumberOfHumanPlayers)){
-                                gameView.setFeedbackArea("\nCurrent turn of: Player " + (gameModel.getCurrentPlayer().getPlayerNumber()) + " This player is controlled by AI!\n");
-                                gameView.setFeedbackArea(gameModel.aiAlgorithm());
-                                gameView.repaint();
-                                break;
-                            }
                             gameView.setFeedbackArea("\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
                             break;
                         }
@@ -97,43 +90,30 @@ public class Controller implements ActionListener {
                             int tax = gameModel.getRailroadRent();
                             gameView.taxRailroad(tax);
                             gameModel.passTurn();
-                            while(gameModel.getCurrentPlayer().getPlayerNumber()>(initialNumberOfHumanPlayers)){
-                                gameView.setFeedbackArea("\nCurrent turn of: Player " + (gameModel.getCurrentPlayer().getPlayerNumber()) + " This player is controlled by AI!\n");
-                                gameView.setFeedbackArea(gameModel.aiAlgorithm());
-                                gameView.repaint();
-                                break;
-                            }
                             gameView.setFeedbackArea("\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
-
                             break;
                         }
                     }
-
-                }
-                while(gameModel.getCurrentPlayer().getPlayerNumber()>(initialNumberOfHumanPlayers)){
-                    gameView.setFeedbackArea("\nCurrent turn of: Player " + (gameModel.getCurrentPlayer().getPlayerNumber()) + " This player is controlled by AI!\n");
-                    gameView.setFeedbackArea(gameModel.aiAlgorithm());
-                    gameView.repaint();
+                    gameView.unlockRollDieButton();
                     gameModel.passTurn();
-                    while(gameModel.getCurrentPlayer().getPlayerNumber()>(initialNumberOfHumanPlayers)){
-                        gameView.setFeedbackArea("\nCurrent turn of: Player " + (gameModel.getCurrentPlayer().getPlayerNumber()) + " This player is controlled by AI!\n");
+                    gameView.setFeedbackArea("\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
+                    goToTheBottomOfTextField();
+                } else if(gameModel.playerIsInJail() && !gameModel.isPlayerAnAI()) {
+                    gameView.payToLeaveJail();
+                }
+                while (gameModel.isPlayerAnAI()){
+                    try {
+                        while (gameModel.isPlayerAnAI()){
                         gameView.setFeedbackArea(gameModel.aiAlgorithm());
                         gameView.repaint();
-                        break;
+                        gameModel.passTurn();
+                        Thread.sleep(1);
+                        }
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
                     }
-                    break;
                 }
-                gameView.unlockRollDieButton();
-                gameModel.passTurn();
-                while(gameModel.getCurrentPlayer().getPlayerNumber()>(initialNumberOfHumanPlayers)){
-                    gameView.setFeedbackArea("\nCurrent turn of: Player " + (gameModel.getCurrentPlayer().getPlayerNumber()) + " This player is controlled by AI!\n");
-                    gameView.setFeedbackArea(gameModel.aiAlgorithm());
-                    gameView.repaint();
-                    break;
-                }
-                gameView.setFeedbackArea("\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
-                goToTheBottomOfTextField();
-                //gameModel.moveToken();
+                //gameModel.passTurn();
                 break;
             case "Buy":
                 gameView.lookingForWinner();
@@ -190,12 +170,6 @@ public class Controller implements ActionListener {
                     gameView.lookingForWinner();
                     gameView.unlockRollDieButton();
                     gameModel.passTurn();
-                    while(gameModel.getCurrentPlayer().getPlayerNumber()>(initialNumberOfHumanPlayers)){
-                        gameView.setFeedbackArea("\nCurrent turn of: Player " + (gameModel.getCurrentPlayer().getPlayerNumber()) + " This player is controlled by AI!\n");
-                        gameView.setFeedbackArea(gameModel.aiAlgorithm());
-                        gameView.repaint();
-                        break;
-                    }
                     gameView.setFeedbackArea("\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
                 }
                 else if (gameModel.getBoard().getIndex(gameModel.getCurrentPlayer().getPosition()) instanceof Utility) {
@@ -204,12 +178,6 @@ public class Controller implements ActionListener {
                     gameView.setFeedbackArea("\nPlayer " + gameModel.getCurrentPlayer().getPlayerNumber() + ": Congratulations, you now own Utility: " + gameModel.getBoardName() +
                             "\nYour new balance is: $" + gameModel.getCurrentPlayer().getBalance() + "\nSpend wisely!");
                     gameModel.passTurn();
-                    while(gameModel.getCurrentPlayer().getPlayerNumber()>(initialNumberOfHumanPlayers)){
-                        gameView.setFeedbackArea("\nCurrent turn of: Player " + (gameModel.getCurrentPlayer().getPlayerNumber()) + " This player is controlled by AI!\n");
-                        gameView.setFeedbackArea(gameModel.aiAlgorithm());
-                        gameView.repaint();
-                        break;
-                    }
                     gameView.setFeedbackArea("\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
                 }
                 else if (gameModel.getBoard().getIndex(gameModel.getCurrentPlayer().getPosition()) instanceof Railroad) {
@@ -218,12 +186,6 @@ public class Controller implements ActionListener {
                     gameView.setFeedbackArea("\nPlayer " + gameModel.getCurrentPlayer().getPlayerNumber() + ": Congratulations, you now own RailRoad: " + gameModel.getBoardName() +
                             "\nYour new balance is: $" + gameModel.getCurrentPlayer().getBalance() + "\nSpend wisely!");
                     gameModel.passTurn();
-                    while(gameModel.getCurrentPlayer().getPlayerNumber()>(initialNumberOfHumanPlayers)){
-                        gameView.setFeedbackArea("\nCurrent turn of: Player " + (gameModel.getCurrentPlayer().getPlayerNumber()) + " This player is controlled by AI!\n");
-                        gameView.setFeedbackArea(gameModel.aiAlgorithm());
-                        gameView.repaint();
-                        break;
-                    }
                     gameView.setFeedbackArea("\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
                 }
 
@@ -244,6 +206,7 @@ public class Controller implements ActionListener {
                     gameView.setFeedbackArea("\nCurrent turn of: Player " + (gameModel.getCurrentPlayer().getPlayerNumber()) + " This player is controlled by AI!\n");
                     gameView.setFeedbackArea(gameModel.aiAlgorithm());
                     gameView.repaint();
+                    gameView.setFeedbackArea("\nPress the pass turn button to move unto the next player.");
                     break;
                 }
                 break;
@@ -283,6 +246,7 @@ public class Controller implements ActionListener {
                     gameView.setFeedbackArea("\nCurrent turn of: Player " + (gameModel.getCurrentPlayer().getPlayerNumber()) + " This player is controlled by AI!\n");
                     gameView.setFeedbackArea(gameModel.aiAlgorithm());
                     gameView.repaint();
+                    gameView.setFeedbackArea("\nPress the pass turn button to move unto the next player.");
                     break;
                 }
                 gameView.unlockRollDieButton();
@@ -318,6 +282,7 @@ public class Controller implements ActionListener {
                     gameView.setFeedbackArea("\nCurrent turn of: Player " + (gameModel.getCurrentPlayer().getPlayerNumber()) + " This player is controlled by AI!\n");
                     gameView.setFeedbackArea(gameModel.aiAlgorithm());
                     gameView.repaint();
+                    gameView.setFeedbackArea("\nPress the pass turn button to move unto the next player.");
                     break;
                 }
                 gameView.setFeedbackArea("\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
