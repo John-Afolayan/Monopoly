@@ -35,6 +35,7 @@ public class Controller implements ActionListener {
                 int diceRoll = gameModel.rollDie();
                 System.out.println(gameModel.playerIsInJail());
                 gameView.repaint();
+                gameView.lookingForWinner();
                 gameModel.checkSquare(diceRoll);
 
                 goToTheBottomOfTextField();

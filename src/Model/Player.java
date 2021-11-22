@@ -14,7 +14,7 @@ import java.util.Random;
 public class Player {
     private String name;
     //private String piece (not implementing for now)
-    private int playerNumber; // ie. player1, player2 etc
+    private final int playerNumber; // ie. player1, player2 etc
     private int position, previousPosition;
     private int balance;
     private ArrayList<House> ownedHouses = new ArrayList<>();

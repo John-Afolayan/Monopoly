@@ -1,6 +1,5 @@
 package Model;
 
-import Game.Command;
 import Game.Parser;
 import View.BoardOverlay;
 
@@ -28,9 +27,8 @@ public class Game {
     private int currentPlayerInt = 0;
     private List<Player> players;
     private ModelUpdateListener viewer;
-    private int numberOfPlayers;
-    private int numberOfAIPlayers;
-    private int totalNumberOfPlayers;
+    private int numberOfHumanPlayers, numberOfAIPlayers, totalNumberOfPlayers;
+    private int initialNumberOfHumanPlayers;
     private String newPlayerName;
     private InputStream inputStream;
     private Board board = new Board();
@@ -152,32 +150,6 @@ public class Game {
         System.out.println("The current player is " + getCurrentPlayer().getName() + "\n");
     }
 
-    public boolean processCommand(Command command) {
-
-        if (command.isUnknown()) {
-            System.out.println("Unknown command");
-            return false;
-        }
-
-        String commandWord = command.getCommandWord();
-        switch (commandWord) {
-            case "move":
-                moveToken();
-                break;
-            case "pass":
-                passTurn();
-                break;
-            case "state":
-                printState();
-                break;
-            case "quit":
-                wantToQuit = true;
-                break;
-        }
-
-        return wantToQuit;
-    }
-
     /**
      * @author John Afolayan
      * @param property Property a player lands on
@@ -206,7 +178,7 @@ public class Game {
          * Passes turn to the next player
          *
          */
-        this.currentPlayerInt = (this.currentPlayerInt == (this.numberOfPlayers - 1)) ? 0 : this.currentPlayerInt + 1;
+        this.currentPlayerInt = (this.currentPlayerInt == (this.totalNumberOfPlayers - 1)) ? 0 : this.currentPlayerInt + 1;
         this.currentPlayer = this.players.get(this.currentPlayerInt);
         for(ModelUpdateListener v: this.views) {
             v.passTurn(getCurrentPlayer().getPlayerNumber());
@@ -223,22 +195,6 @@ public class Game {
         passTurn();
     }
 
-
-    private void newTurn() {
-        printCurrentPlayer();
-        //parser.showCommands();
-    }
-
-    private void createAIPlayers(){
-        if(getPlayers().size() < 4){
-            for (int i = 1; i <= (4 - getPlayers().size()); i++) {
-                Player aiPlayer = new Player(i);
-                aiPlayer.setAI();
-                players.add(aiPlayer);
-            }
-        }
-    }
-
     public void initializePlayers(int humanPlayers, int aiPlayers) {
         /**
          * @author John Afolayan
@@ -248,14 +204,15 @@ public class Game {
          *
          */
 
-        this.numberOfPlayers = humanPlayers;
+        this.numberOfHumanPlayers = humanPlayers;
+        this.initialNumberOfHumanPlayers = numberOfHumanPlayers; //Make sure you don't change this value
         this.numberOfAIPlayers = aiPlayers;
-        this.totalNumberOfPlayers = humanPlayers + aiPlayers;
-        createPlayers((numberOfPlayers + numberOfAIPlayers));
+        this.totalNumberOfPlayers = numberOfHumanPlayers + numberOfAIPlayers;
+        createPlayers((numberOfHumanPlayers + numberOfAIPlayers));
         this.currentPlayer = players.get(0);
 
         for(ModelUpdateListener v: this.views) {
-            v.initializeGame(numberOfPlayers + numberOfAIPlayers, getCurrentPlayer().getPlayerNumber());
+            v.initializeGame(totalNumberOfPlayers, getCurrentPlayer().getPlayerNumber());
         }
 
 
@@ -319,9 +276,13 @@ public class Game {
     public boolean hasPlayerLandedOnSpecialPosition(){
         if(getCurrentPlayer().getPosition() == 4){ //If player lands on Income Tax, they must pay $200
             getCurrentPlayer().decrementBalance(200);
+            checkPlayerBalance(getCurrentPlayer());
+            lookingForWinner();
             return true;
         } else if(getCurrentPlayer().getPosition() == 38){ //If player lands on Luxury Tax, they must pay $200
             getCurrentPlayer().decrementBalance(100);
+            checkPlayerBalance(getCurrentPlayer());
+            lookingForWinner();
             return true;
         }
         return false;
@@ -423,31 +384,10 @@ public class Game {
     }
 
     public boolean isPlayerAnAI(){
-        if(getCurrentPlayer().getPlayerNumber()>(numberOfPlayers)){
+        if(getCurrentPlayer().getPlayerNumber()>(initialNumberOfHumanPlayers)){
             return true;
         }
         return false;
-    }
-
-    public boolean aiPurchaseDecision(){
-        Random bool = new Random();
-        if(getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Property){
-            Property p = (Property) getBoard().getIndex(getCurrentPlayer().getPosition());
-            if(getCurrentPlayer().getBalance() > p.getValue()){
-                return true; //If AI has enough money to purchase a property then it will choose to do so
-            }
-        } else if (getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Railroad) {
-            Railroad r = (Railroad) getBoard().getIndex(getCurrentPlayer().getPosition());
-            if(getCurrentPlayer().getBalance() > r.getValue()){
-                return true; //If AI has enough money to purchase a property then it will choose to do so
-            }
-        } else if (getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Utility) {
-            Utility u = (Utility) getBoard().getIndex(getCurrentPlayer().getPosition());
-            if(getCurrentPlayer().getBalance() > u.getValue()){
-                return true; //If AI has enough money to purchase a property then it will choose to do so
-            }
-        }
-        return bool.nextBoolean(); //Otherwise, the decision will randomly be decided.
     }
 
     public boolean isCurrentPositionPropertyOwned(){
@@ -459,6 +399,7 @@ public class Game {
         }
         return false;
     }
+
     public Property getProperty(int x){
         for(int i = 0; i < players.size(); i++){
             if(players.get(i).getPosition() == x && getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Property){
@@ -467,7 +408,6 @@ public class Game {
         }
         return (Property) board.getIndex(players.get(x).getPosition());
     }
-
     public Railroad getRailroad(int x){
         for(int i = 0; i < players.size(); i++){
             if(players.get(i).getPosition() == x && getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Railroad){
@@ -506,24 +446,51 @@ public class Game {
         return false;
     }
 
+    public boolean aiPurchaseDecision(){
+        Random bool = new Random();
+        if(getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Property){
+            Property p = (Property) getBoard().getIndex(getCurrentPlayer().getPosition());
+            if(getCurrentPlayer().getBalance() > p.getValue()){
+                return true; //If AI has enough money to purchase a property then it will choose to do so
+            }
+        } else if (getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Railroad) {
+            Railroad r = (Railroad) getBoard().getIndex(getCurrentPlayer().getPosition());
+            if(getCurrentPlayer().getBalance() > r.getValue()){
+                return true; //If AI has enough money to purchase a property then it will choose to do so
+            }
+        } else if (getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Utility) {
+            Utility u = (Utility) getBoard().getIndex(getCurrentPlayer().getPosition());
+            if(getCurrentPlayer().getBalance() > u.getValue()){
+                return true; //If AI has enough money to purchase a property then it will choose to do so
+            }
+        }
+        return bool.nextBoolean(); //Otherwise, the decision will randomly be decided.
+    }
+
     public String aiAlgorithm() {
+        checkPlayerBalance(getCurrentPlayer());
+        lookingForWinner();
         if (isPlayerAnAI() && getCurrentPlayer().getBalance() > 0 && getCurrentPlayer().getPosition() != 30) {
             hasPlayerPassedGo();
             int diceroll1 = getCurrentPlayer().rollDice(); //roll first die
             int diceroll2 = getCurrentPlayer().rollDice(); //roll second die
             int totalDiceroll = diceroll1 + diceroll2; //add two die together
-            getCurrentPlayer().setPosition(totalDiceroll+getCurrentPlayerPosition()); //move AI player to position specified by die
+            getCurrentPlayer().setPosition((totalDiceroll+getCurrentPlayerPosition()) % board.size()); //move AI player to position specified by die
 
             if(getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Property){ //If player lands on a property
                 if (isCurrentPositionPropertyOwned()) { //If AI lands on a position owned by another player then tax them.
                     int taxedAmount = (int) (0.1 * ((Property) getBoard().getIndex(getCurrentPlayer().getPosition())).getValue());
                     Player tempPlayer = whoOwnsProperty((Property) getBoard().getIndex(getCurrentPlayer().getPosition())); //Get player who owns property
                     tempPlayer.incrementBalance(taxedAmount); //Increment balance for player who owns property.
+                    checkPlayerBalance(getCurrentPlayer());
+                    lookingForWinner();
                     return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ".\nThis square is owned by another player " + tempPlayer.getPlayerNumber() +". AI has been taxed $" + taxedAmount;
                 } else if (!isCurrentPositionPropertyOwned()) { //If AI lands on an available property, it will decide whether to purchase it or not.
                     if (aiPurchaseDecision()) {
                         getCurrentPlayer().addProperty((Property) getProperty(getCurrentPlayer().getPosition()));
                         getCurrentPlayer().decrementBalance(((Property) getBoard().getIndex(getCurrentPlayer().getPosition())).getValue());
+                        checkPlayerBalance(getCurrentPlayer());
+                        lookingForWinner();
                         return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ". They decided to purchase " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName();
                     } else {
                         return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ". They decided not to purchase " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName();
@@ -534,11 +501,15 @@ public class Game {
                     int taxedAmount = (int) (0.1 * ((Railroad) getBoard().getIndex(getCurrentPlayer().getPosition())).getValue());
                     Player tempPlayer = whoOwnsRailroad((Railroad) getBoard().getIndex(getCurrentPlayer().getPosition())); //Get player who owns property
                     tempPlayer.incrementBalance(taxedAmount); //Increment balance for player who owns property.
+                    checkPlayerBalance(getCurrentPlayer());
+                    lookingForWinner();
                     return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ".\nThis square is owned by player " + tempPlayer.getPlayerNumber() +". AI has been taxed $" + taxedAmount;
                 } else if (!isCurrentPositionRailroadOwned()) { //If AI lands on an available property, it will decide whether to purchase it or not.
                     if (aiPurchaseDecision()) {
                         getCurrentPlayer().addRailroad((Railroad) getRailroad(getCurrentPlayer().getPosition()));
                         getCurrentPlayer().decrementBalance(((Railroad) getBoard().getIndex(getCurrentPlayer().getPosition())).getValue());
+                        checkPlayerBalance(getCurrentPlayer());
+                        lookingForWinner();
                         return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ". They decided to purchase " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName();
                     } else {
                         return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ". They decided not to purchase " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName();
@@ -549,11 +520,15 @@ public class Game {
                     int taxedAmount = (int) (0.1 * ((Utility) getBoard().getIndex(getCurrentPlayer().getPosition())).getValue());
                     Player tempPlayer = whoOwnsUtility((Utility) getBoard().getIndex(getCurrentPlayer().getPosition())); //Get player who owns property
                     tempPlayer.incrementBalance(taxedAmount); //Increment balance for player who owns property.
+                    checkPlayerBalance(getCurrentPlayer());
+                    lookingForWinner();
                     return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ".\nThis square is owned by player " + tempPlayer.getPlayerNumber() + ". AI has been taxed $" + taxedAmount;
                 } else if (!isCurrentPositionUtilityOwned()) { //If AI lands on an available utility, it will decide whether to purchase it or not.
                     if (aiPurchaseDecision()) {
                         getCurrentPlayer().addUtility((Utility) getUtility(getCurrentPlayer().getPosition()));
                         getCurrentPlayer().decrementBalance(((Utility) getBoard().getIndex(getCurrentPlayer().getPosition())).getValue());
+                        checkPlayerBalance(getCurrentPlayer());
+                        lookingForWinner();
                         return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ". They decided to purchase " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName();
                     } else {
                         return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ". They decided not to purchase " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName();
@@ -561,9 +536,13 @@ public class Game {
                 }
             } else if(getCurrentPlayer().getPosition() == 4){ //AI Player landed on Income Tax square and must pay $200.
                 getCurrentPlayer().decrementBalance(200);
+                checkPlayerBalance(getCurrentPlayer());
+                lookingForWinner();
                 return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ". The AI has been taxed $200";
             } else if(getCurrentPlayer().getPosition() == 38){ //If AI Players landed on Luxury Tax square, they must pay $100.
                 getCurrentPlayer().decrementBalance(100);
+                checkPlayerBalance(getCurrentPlayer());
+                lookingForWinner();
                 return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ". The AI has been taxed $100";
             }else if(getCurrentPlayer().getPosition() == 30){ //Player rolled die and is in Jail.
                 return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now in: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName() + ".";
@@ -571,12 +550,15 @@ public class Game {
             return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + "(AI): rolled two die, " + diceroll1 + " and " + diceroll2 + " and is now on: " + getBoard().getIndex(getCurrentPlayer().getPosition()).getName();
         }
         else if(isPlayerAnAI() && getCurrentPlayer().getBalance() < 0) { //If AI is bankrupt, remove them from the game
-            removeBankruptPlayer();
+            checkPlayerBalance(getCurrentPlayer());
+            lookingForWinner();
             return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + " is bankrupt and has therefore been eliminated.\n";
         } else if(isPlayerAnAI() && getCurrentPlayer().getPosition() == 30) { //If AI is in jail, they will pay to leave.
             getCurrentPlayer().setPosition(10);
             return "\nPlayer " + getCurrentPlayer().getPlayerNumber() + " has paid $50 to leave jail.";
         }
+        checkPlayerBalance(getCurrentPlayer());
+        lookingForWinner();
         return "This player is an AI but the expected output isn't being printed.";
     }
 
@@ -714,6 +696,14 @@ public class Game {
             lookingForWinner();
         }
 
+    }
+
+    public int getNumberOfHumanPlayers(){
+        return numberOfHumanPlayers;
+    }
+
+    public int getNumberOfAIPlayers(){
+        return numberOfAIPlayers;
     }
 
     public void sellAHotel(){
@@ -1023,68 +1013,32 @@ public class Game {
         return board;
     }
 
-
-    public void moveToken() {
-        /**
-         * @author John Afolayan and Ibrahim Said
-         *
-         * Checks the syntax of the command passed and moves token n amount of times
-         * where n is the value which is rolled on a dice.
-         *
-         */
-
-        if (board.getIndex(getCurrentPlayer().getPosition()) instanceof Property){
-            if(propertyOwned((Property) board.getIndex(getCurrentPlayer().getPosition()))){
-                //taxPlayer();
-                passTurn();
-            }
-        }
-        else if (board.getIndex(getCurrentPlayer().getPosition())instanceof Square) {
-            passTurn();
-        }
-        update();
-    }
-
-
-    /**
-     * @author John Afolayan, Ibrahim Said
-     * A method to prompt a user to purchase a property or not
-     *//*
-    public void promptUserToPurchase(){
-        int propertyPrice = ((Property) board.getIndex(getCurrentPlayer().getPosition())).getValue();
-        int input = JOptionPane.showConfirmDialog(null, "Player " + getCurrentPlayer().getPlayerNumber() + ": Would you like to purchase " + getBoardName() + "? It costs $" + propertyPrice + " and you currently have $" + getCurrentPlayer().getBalance() + ". Click yes to purchase or no to move on.", "Purchase " + getBoardName() + "?", JOptionPane.YES_NO_OPTION);
-        if(input == JOptionPane.YES_OPTION){
-            getCurrentPlayer().addProperty((Property) board.getIndex(getCurrentPlayer().getPosition()));
-            getCurrentPlayer().decrementBalance(((Property) board.getIndex(getCurrentPlayer().getPosition())).getValue());
-            JOptionPane.showMessageDialog(null, "Player " + getCurrentPlayer().getPlayerNumber() + ": Congratulations, you now own property: " + (Property) board.getIndex(getCurrentPlayer().getPosition())
-                    + ". Your new balance is: $" + getCurrentPlayer().getBalance() + "\nSpend wisely!");
-            checkPlayerBalance(players.get(currentPlayerInt));
-            lookingForWinner();
-            passTurn();
-        } else if (input == JOptionPane.NO_OPTION){
-            checkPlayerBalance(players.get(currentPlayerInt));
-            lookingForWinner();
-            passTurn();
-        }
-        checkPlayerBalance(players.get(currentPlayerInt));
-        lookingForWinner();
-    }*/
-
-
-
     /**
      * @author John Afolayan
      * This method removes a banrupt player from the game.
      */
     public void removeBankruptPlayer(){
+        int index = 1;
         for (final Iterator<Player> iterator = players.iterator(); iterator.hasNext();) {
             Player temp = iterator.next();
             if (temp.getBalance() <= 0) {
+                if(index > numberOfHumanPlayers){
+                    numberOfAIPlayers -= 1;
+                } else if(index <= numberOfHumanPlayers){
+                    numberOfHumanPlayers -= 1;
+                }
                 iterator.remove();
-                this.numberOfPlayers -= 1;
+                this.totalNumberOfPlayers -= 1;
                 this.currentPlayerInt -= 1;
             }
+            index += 1;
         }
+        //REMOVE LATER
+        System.out.println("There are now " + players.size() +" left in the game.");
+        for(int i = 0; i < players.size(); i++){
+            System.out.print(players.get(i).getPlayerNumber() + ", ");
+        }
+        System.out.println();
     }
 
     /**
@@ -1094,8 +1048,6 @@ public class Game {
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
-
-
 
     public void quitGame() {
         System.exit(0);
@@ -1150,7 +1102,6 @@ public class Game {
         if (!ownedBy.equals(getCurrentPlayer())){
             getCurrentPlayer().decrementBalance(total); //remove $amount from player being taxed
             ownedBy.incrementBalance(total); //add $amount to player who owns property
-            //JOptionPane.showMessageDialog(null, "Player " + getCurrentPlayer().getPlayerNumber() + ": You've landed on a property owned by player "+  ownedBy.getPlayerNumber() + ". You've been taxed $" + amount + ", your new balance is $" + getCurrentPlayer().getBalance());
             checkPlayerBalance(getCurrentPlayer());
             lookingForWinner();
         }
@@ -1170,7 +1121,7 @@ public class Game {
         if (!ownedBy.equals(getCurrentPlayer())){
             getCurrentPlayer().decrementBalance(tax);
             ownedBy.incrementBalance(tax);
-            //JOptionPane.showMessageDialog(null, "Player " + getCurrentPlayer().getPlayerNumber() + ": You've landed on a utility owned by player "+  ownedBy.getPlayerNumber() + ". You've been taxed $" + tax + ", your new balance is $" + getCurrentPlayer().getBalance());
+
             checkPlayerBalance(getCurrentPlayer());
             lookingForWinner();
         }
@@ -1190,7 +1141,6 @@ public class Game {
         if(!ownedBy.equals(getCurrentPlayer())){
             getCurrentPlayer().decrementBalance(tax);
             ownedBy.incrementBalance(tax);
-            //JOptionPane.showMessageDialog(null, "Player " + getCurrentPlayer().getPlayerNumber() + ": You've landed on a railroad owned by player "+  ownedBy.getPlayerNumber() + ". You've been taxed $" + tax + ", your new balance is $" + getCurrentPlayer().getBalance());
 
             for(ModelUpdateListener v: this.views) {
                 v.taxProperty(tax, ownedBy, getCurrentPlayer().getPlayerNumber(), getCurrentPlayer().getBalance());
@@ -1218,56 +1168,30 @@ public class Game {
             }
             else if (getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Property) {
                 if (!propertyOwned((Property) getBoard().getIndex(getCurrentPlayer().getPosition()))) { //If property landed on isn't owned
-                    //gameView.unlockBuyButton(); //Unlock the 'Buy' button.
-                    //gameView.promptPropertyPurchase();
-                    //goToTheBottomOfTextField();
-                    //break;
+
                     for (ModelUpdateListener v : this.views) {
                         v.unlockPropertyBuy();
                     }
                 } else if (propertyOwned((Property) getBoard().getIndex(getCurrentPlayer().getPosition()))) { //If property landed on is owned by someone else
-                    //gameView.taxProperty();
-                    //passTurn();
-                    //gameView.setFeedbackArea("\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
-
-                    //break;
                     this.taxProperty();
                     passTurn();
                 }
             } else if (getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Utility) {
                 if (!utilityOwned((Utility) getBoard().getIndex(getCurrentPlayer().getPosition()))) { //If utility landed on isn't owned
-                    //gameView.unlockBuyButton(); //Unlock the 'Buy' button.
-                    //gameView.promptUtilityPurchase();
-                    //goToTheBottomOfTextField();
-                    //break;
                     for (ModelUpdateListener v : this.views) {
                         v.unlockUtilityBuy();
                     }
                 } else if (utilityOwned((Utility) getBoard().getIndex(getCurrentPlayer().getPosition()))) { //If utility landed on is owned by someone else
                     int tax = getUtilityRent(diceRoll);
-                    //gameView.taxUtility(tax);
-                    //gameModel.passTurn();
-                    //gameView.setFeedbackArea("\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
-
-                    //break;
                     this.taxUtility(tax);
                     passTurn();
                 }
             } else if (getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Railroad) {
                 if (!railroadsOwned((Railroad) getBoard().getIndex(getCurrentPlayer().getPosition()))) { //If RailRoad landed on isn't owned
-                    //gameView.unlockBuyButton(); //Unlock the 'Buy' button.
-                    //gameView.promptRailroadPurchase();
-                    //goToTheBottomOfTextField();
-                    //break;
                     for (ModelUpdateListener v : this.views) {
                         v.unlockRailroadBuy();
                     }
                 } else if (railroadsOwned((Railroad) getBoard().getIndex(getCurrentPlayer().getPosition()))) { //If Railroad landed on is owned by someone else
-                    //gameView.taxRailroad(tax);
-                    //gameModel.passTurn();
-                    //gameView.setFeedbackArea("\nCurrently turn of: Player " + gameModel.getCurrentPlayer().getPlayerNumber() + "\n");
-
-                    //break;
                     int rent = getRailroadRent();
                     this.taxRailroad(rent);
                     passTurn();
@@ -1312,7 +1236,6 @@ public class Game {
     }
 
     public void makePurchase(){
-        //gameView.lockBuyButton();
         checkPlayerBalance(getCurrentPlayer());
         lookingForWinner();
         if (board.getIndex(getCurrentPlayer().getPosition()) instanceof Property) {
@@ -1363,8 +1286,7 @@ public class Game {
             getCurrentPlayer().decrementBalance(((Property) getBoard().getIndex(getCurrentPlayer().getPosition())).getValue());
             checkPlayerBalance(getCurrentPlayer());
             lookingForWinner();
-            //gameView.setFeedbackArea("\nPlayer " + gameModel.getCurrentPlayer().getPlayerNumber() + ": Congratulations, you now own property: " + gameModel.getBoardName() +
-            //"\nYour new balance is: $" + gameModel.getCurrentPlayer().getBalance() + "\nSpend wisely!");
+
             for(ModelUpdateListener v: this.views) {
                 v.confirmPurchase(getCurrentPlayer().getPlayerNumber(), getBoardName(), getCurrentPlayer().getBalance());
             }
@@ -1376,8 +1298,6 @@ public class Game {
             getCurrentPlayer().decrementBalance(((Utility) getBoard().getIndex(getCurrentPlayer().getPosition())).getValue());
             checkPlayerBalance(getCurrentPlayer());
             lookingForWinner();
-            //gameView.setFeedbackArea("\nPlayer " + gameModel.getCurrentPlayer().getPlayerNumber() + ": Congratulations, you now own Utility: " + gameModel.getBoardName() +
-            //"\nYour new balance is: $" + gameModel.getCurrentPlayer().getBalance() + "\nSpend wisely!");
 
             for(ModelUpdateListener v: this.views) {
                 v.confirmPurchase(getCurrentPlayer().getPlayerNumber(), getBoardName(), getCurrentPlayer().getBalance());
@@ -1390,8 +1310,6 @@ public class Game {
             getCurrentPlayer().decrementBalance(((Railroad) getBoard().getIndex(getCurrentPlayer().getPosition())).getValue());
             checkPlayerBalance(getCurrentPlayer());
             lookingForWinner();
-            //gameView.setFeedbackArea("\nPlayer " + gameModel.getCurrentPlayer().getPlayerNumber() + ": Congratulations, you now own RailRoad: " + gameModel.getBoardName() +
-            //"\nYour new balance is: $" + gameModel.getCurrentPlayer().getBalance() + "\nSpend wisely!");
 
             for(ModelUpdateListener v: this.views) {
                 v.confirmPurchase(getCurrentPlayer().getPlayerNumber(), getBoardName(), getCurrentPlayer().getBalance());
