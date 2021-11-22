@@ -338,7 +338,7 @@ public class Game {
             int diceroll1 = getCurrentPlayer().rollDice(); //roll first die
             int diceroll2 = getCurrentPlayer().rollDice(); //roll second die
             int totalDiceroll = diceroll1 + diceroll2; //add two die together
-            getCurrentPlayer().setPosition(totalDiceroll+getCurrentPlayerPosition()); //move AI player to position specified by die
+            getCurrentPlayer().setPosition((totalDiceroll+getCurrentPlayerPosition()) % getBoard().size()); //move AI player to position specified by die
 
             if(getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Property){ //If player lands on a property
                 if (isCurrentPositionPropertyOwned()) { //If AI lands on a position owned by another player then tax them.
@@ -411,7 +411,7 @@ public class Game {
     }
 
     public boolean playerIsInJail(){
-        if(board.getIndex(getCurrentPlayer().getPosition()).getName().equalsIgnoreCase("Jail")){
+        if(board.getIndex(getCurrentPlayerPosition()).getName().equalsIgnoreCase("Jail")){
             return true;
         }
         return false;
