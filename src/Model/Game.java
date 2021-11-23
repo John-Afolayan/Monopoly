@@ -581,7 +581,6 @@ public class Game {
 
     public void purchaseAHouse(){
         checkingForHouseEligibility();
-
         String currentColor = (((Property) getBoard().getIndex(getCurrentPlayer().getPosition())).getColor());
         if (isAbleToPurchaseBlue() && currentColor.equals("blue")){
             for (ModelUpdateListener v: views){
@@ -1197,7 +1196,7 @@ public class Game {
                     passTurn();
                 }
 
-            }else if (getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Square){
+            } else if (getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Square){
                 checkPlayerBalance(getCurrentPlayer());
                 lookingForWinner();
                 passTurn();

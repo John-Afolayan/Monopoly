@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90a0b1b4-e1b3-4816-a2c8-c7323432a091" name="Default Changelist" comment="Fixed small bug that would wait until the player's next turn to determine if they are bankrupt.">
+    <list default="true" id="90a0b1b4-e1b3-4816-a2c8-c7323432a091" name="Default Changelist" comment="fixing and decoupling jail and go">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Monopoly.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Monopoly.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Monopoly/Controller/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Monopoly/Controller/Controller.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Monopoly/Model/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Monopoly/Model/Game.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Monopoly/Model/Game.java.bak" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Monopoly/Model/ModelUpdateListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Monopoly/Model/ModelUpdateListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Monopoly/Model/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Monopoly/Model/Player.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Monopoly/View/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Monopoly/View/View.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GameModelTest/GameTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameModelTest/GameTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Game.java.bak" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/ModelUpdateListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ModelUpdateListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,40 +68,9 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager" selected="Application.View">
-    <configuration name="View" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="adopt-openjdk-11" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="MAIN_CLASS_NAME" value="View.View" />
-      <module name="Monopoly" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="View.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GameTest.testNumOfInitializedPlayers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Monopoly2" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="GameModelTest.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="GameModelTest" />
-      <option name="MAIN_CLASS_NAME" value="GameModelTest.GameTest" />
-      <option name="METHOD_NAME" value="testNumOfInitializedPlayers" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.GameTest.testingTaxingOfPlayer">
     <configuration name="GameTest.testRemovalOfBankruptPlayer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Monopoly2" />
+      <module name="Monopoly" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="GameModelTest.*" />
@@ -124,24 +85,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GameTest.testSearchForAWinner" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Monopoly2" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="GameModelTest.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="GameModelTest" />
-      <option name="MAIN_CLASS_NAME" value="GameModelTest.GameTest" />
-      <option name="METHOD_NAME" value="testSearchForAWinner" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="GameTest.testSettingAPlayerPosition" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Monopoly2" />
+      <module name="Monopoly" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="GameModelTest.*" />
@@ -151,6 +96,54 @@
       <option name="PACKAGE_NAME" value="GameModelTest" />
       <option name="MAIN_CLASS_NAME" value="GameModelTest.GameTest" />
       <option name="METHOD_NAME" value="testSettingAPlayerPosition" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameTest.testingBuyingOfPlayerProperty" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Monopoly" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="GameModelTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="GameModelTest" />
+      <option name="MAIN_CLASS_NAME" value="GameModelTest.GameTest" />
+      <option name="METHOD_NAME" value="testingBuyingOfPlayerProperty" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameTest.testingOwnershipOfProperty" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Monopoly" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="GameModelTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="GameModelTest" />
+      <option name="MAIN_CLASS_NAME" value="GameModelTest.GameTest" />
+      <option name="METHOD_NAME" value="testingOwnershipOfProperty" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameTest.testingTaxingOfPlayer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Monopoly" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="GameModelTest.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="GameModelTest" />
+      <option name="MAIN_CLASS_NAME" value="GameModelTest.GameTest" />
+      <option name="METHOD_NAME" value="testingTaxingOfPlayer" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -205,11 +198,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.View" />
-        <item itemvalue="Application.View" />
-        <item itemvalue="Application.View" />
-        <item itemvalue="Application.View" />
-        <item itemvalue="Application.View" />
+        <item itemvalue="JUnit.GameTest.testingTaxingOfPlayer" />
+        <item itemvalue="JUnit.GameTest.testingBuyingOfPlayerProperty" />
+        <item itemvalue="JUnit.GameTest.testingOwnershipOfProperty" />
+        <item itemvalue="JUnit.GameTest.testRemovalOfBankruptPlayer" />
+        <item itemvalue="JUnit.GameTest.testSettingAPlayerPosition" />
       </list>
     </recent_temporary>
   </component>
@@ -446,7 +439,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637613133175</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="fixing and decoupling jail and go">
+      <created>1637624269451</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1637624269451</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -484,6 +484,7 @@
     <MESSAGE value="finished refactoring to decouple model from view" />
     <MESSAGE value="fixed taxing bug that would tax the player that paid for the property/railroad/utility they themselves bought" />
     <MESSAGE value="Fixed small bug that would wait until the player's next turn to determine if they are bankrupt." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed small bug that would wait until the player's next turn to determine if they are bankrupt." />
+    <MESSAGE value="fixing and decoupling jail and go" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing and decoupling jail and go" />
   </component>
 </project>
