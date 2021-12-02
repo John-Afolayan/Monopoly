@@ -1,6 +1,8 @@
 package Model;
 
-public class Utility extends Square{
+import java.io.Serializable;
+
+public class Utility extends Square implements Serializable {
 
     private String name;
     private int value;

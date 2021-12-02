@@ -1,6 +1,8 @@
 package Model;
 
-public interface ModelUpdateListener {
+import java.io.Serializable;
+
+public interface ModelUpdateListener extends Serializable {
     void modelUpdated();
 
     void dieCount(int dieRoll1, int dieRoll2, int position);
@@ -62,6 +64,8 @@ public interface ModelUpdateListener {
     void cannotSellHotel();
 
     void payToLeaveJail();
+
+
 
 
     void sellingHouse();

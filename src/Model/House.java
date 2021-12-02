@@ -1,6 +1,8 @@
 package Model;
 
-public class House {
+import java.io.Serializable;
+
+public class House implements Serializable {
     private String name;
     private int price;
     private String color;

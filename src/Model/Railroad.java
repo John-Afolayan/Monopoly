@@ -1,6 +1,8 @@
 package Model;
 
-public class Railroad extends Square{
+import java.io.Serializable;
+
+public class Railroad extends Square implements Serializable {
 
     private String name;
     private int value;

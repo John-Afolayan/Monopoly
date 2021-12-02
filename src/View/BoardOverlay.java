@@ -4,13 +4,14 @@ import Model.Game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * @author John Afolayan
  * A class which represents a player's coordinate on the Monopoly board.
  */
-public class BoardOverlay extends JPanel {
+public class BoardOverlay extends JPanel implements Serializable {
     Game game;
     HashMap<String, Point> boardLocations = new HashMap<String, Point>();
 

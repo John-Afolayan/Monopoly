@@ -1,5 +1,6 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @version 2.0
  */
 
-public class Board {
+public class Board implements Serializable {
 
     private ArrayList<Square> board;
     private List<Player> players;

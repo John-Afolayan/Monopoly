@@ -15,6 +15,8 @@ public class View extends JFrame implements ModelUpdateListener {
     JButton buyButton;
     JButton quitButton;
     JButton addHouseButton;
+    JButton resumeGameButton;
+    JButton saveGameButton;
     ArrayList<JButton> listOfCommandButtons;
     JTextArea feedbackArea;
     JButton stateButton;
@@ -79,8 +81,11 @@ public class View extends JFrame implements ModelUpdateListener {
         addHouseButton = new JButton("Buy/Sell House");
         addHotelButton = new JButton("Buy/Sell Hotel");
         passTurnButton = new JButton("Pass Turn");
+        resumeGameButton = new JButton("Load Game");
+        saveGameButton = new JButton("Save Current Game");
         quitButton = new JButton("Quit Game");
         stateButton = new JButton("State");
+        saveGameButton.setEnabled(false);
         addHotelButton.setEnabled(false);
         rollDieButton.setEnabled(false);
         passTurnButton.setEnabled(false);
@@ -91,6 +96,8 @@ public class View extends JFrame implements ModelUpdateListener {
         addHouseButton.setEnabled(false);
         listOfCommandButtons = new ArrayList<JButton>();
         listOfCommandButtons.add(rollDieButton);
+        listOfCommandButtons.add(saveGameButton);
+        listOfCommandButtons.add(resumeGameButton);
         listOfCommandButtons.add(buyButton);
         listOfCommandButtons.add(passTurnButton);
         listOfCommandButtons.add(stateButton);
@@ -109,17 +116,18 @@ public class View extends JFrame implements ModelUpdateListener {
 
         JPanel centerPanel = new JPanel();
         JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.setLayout(new FlowLayout());
         centerPanel.setLayout(new BorderLayout());
         menuPanel.add(centerPanel, BorderLayout.CENTER);
         centerPanel.add(rollDieButton, BorderLayout.CENTER);
         centerPanel.add(buyButton, BorderLayout.WEST);
         centerPanel.add(stateButton, BorderLayout.EAST);
-        bottomPanel.add(addHouseButton, BorderLayout.EAST);
-        bottomPanel.add(addHotelButton, BorderLayout.CENTER);
+        bottomPanel.add(addHouseButton);
+        bottomPanel.add(addHotelButton);
         menuPanel.add(passTurnButton, BorderLayout.EAST);
-
-        bottomPanel.add(quitButton, BorderLayout.WEST);
+        bottomPanel.add(resumeGameButton);
+        bottomPanel.add(saveGameButton);
+        bottomPanel.add(quitButton);
         menuPanel.add(bottomPanel, BorderLayout.SOUTH);
         root.add(menuPanel, BorderLayout.SOUTH);
 
@@ -240,8 +248,9 @@ public class View extends JFrame implements ModelUpdateListener {
      * This method unlocks GUI buttons after a player specifies amount of players
      */
     public void unlockButtons() {
+        resumeGameButton.setEnabled(false);
         for (JButton button : listOfCommandButtons) {
-            if(!button.getText().equalsIgnoreCase("Buy"))
+            if(!button.getText().equalsIgnoreCase("Buy") && !button.getText().equalsIgnoreCase("Load Game"))
                 button.setEnabled(true);
         }
     }
@@ -543,4 +552,7 @@ public class View extends JFrame implements ModelUpdateListener {
         return input;
     }
 
+    public void lockNewGameButton() {
+        newGameButton.setEnabled(false);
+    }
 }

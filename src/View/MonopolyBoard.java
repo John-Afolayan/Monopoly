@@ -6,11 +6,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 /*
  * The JPanel is an image of the Monopoly board that we will be overlaying the components over.
  */
-class MonopolyBoard extends JPanel {
+class MonopolyBoard extends JPanel implements Serializable {
     private Image image;
 
     public MonopolyBoard() {

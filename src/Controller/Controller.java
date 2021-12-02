@@ -6,8 +6,10 @@ import View.View;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.Serializable;
 
-public class Controller implements ActionListener {
+public class Controller implements ActionListener, Serializable {
     View gameView;
     Game gameModel;
     int numberOfHumanPlayers, numberOfAIPlayers, initialNumberOfHumanPlayers, totalPlayerAmount;
@@ -36,6 +38,7 @@ public class Controller implements ActionListener {
                 gameModel.checkSquare(diceRoll);
                 gameView.unlockPassTurnButton();
                 goToTheBottomOfTextField();
+
                 break;
 
             case buy:
@@ -113,5 +116,6 @@ public class Controller implements ActionListener {
     private void goToTheBottomOfTextField() {
         gameView.getFeedbackArea().getCaret().setDot(Integer.MAX_VALUE);
     }
+
 
 }

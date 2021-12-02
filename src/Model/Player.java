@@ -7,11 +7,12 @@ package Model;
  * @version 1.0
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Player {
+public class Player implements Serializable {
     private final int playerNumber; // ie. player1, player2 etc
     private int position, previousPosition;
     private int balance;
@@ -230,7 +231,7 @@ public class Player {
             dieRoll += diceRoll;
         }
         if(dieRoll >=0){
-            return dieRoll;
+            return 1;
         } else {
             rollDice();
         }
