@@ -49,6 +49,10 @@
     <color>purple</color>
     <value>140</value>
   </Property>
+  <Utility>
+    <name>Electric Company</name>
+    <value>150</value>
+  </Utility>
   <name />
   <Property>
     <name>States Ave</name>
@@ -164,8 +168,4 @@
     <color>blue</color>
     <value>400</value>
   </Property>
-  <Utility>
-    <name>Electric Company</name>
-    <value>150</value>
-  </Utility>
 </board>
