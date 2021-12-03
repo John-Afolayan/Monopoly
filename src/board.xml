@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<board>
+  <Square>
+    <name>Go!</name>
+  </Square>
+  <Property>
+    <name>Mediterranean Ave</name>
+    <color>brown</color>
+    <value>60</value>
+  </Property>
+  <Square>
+    <name>empty 1</name>
+  </Square>
+  <Property>
+    <name>Baltic Ave</name>
+    <color>brown</color>
+    <value>60</value>
+  </Property>
+  <Square>
+    <name>Income Tax</name>
+  </Square>
+  <Railroad>
+    <name>Reading RailRoad</name>
+    <value>200</value>
+  </Railroad>
+  <Property>
+    <name>Oriental Ave</name>
+    <color>light blue</color>
+    <value>100</value>
+  </Property>
+  <Square>
+    <name>empty 2</name>
+  </Square>
+  <Property>
+    <name>Vermont Ave</name>
+    <color>light blue</color>
+    <value>100</value>
+  </Property>
+  <Property>
+    <name>Vermont Ave</name>
+    <color>light blue</color>
+    <value>120</value>
+  </Property>
+  <Square>
+    <name>empty 1</name>
+  </Square>
+  <Property>
+    <name>St. Charles Place</name>
+    <color>purple</color>
+    <value>140</value>
+  </Property>
+  <name />
+  <Property>
+    <name>States Ave</name>
+    <color>purple</color>
+    <value>140</value>
+  </Property>
+  <Property>
+    <name>Virginia Ave</name>
+    <color>purple</color>
+    <value>160</value>
+  </Property>
+  <Railroad>
+    <name>Pennsylvania Railroad</name>
+    <value>200</value>
+  </Railroad>
+  <Property>
+    <name>St. James Place</name>
+    <color>orange</color>
+    <value>180</value>
+  </Property>
+  <Square>
+    <name>empty 3</name>
+  </Square>
+  <Property>
+    <name>Tennessee Ave</name>
+    <color>orange</color>
+    <value>180</value>
+  </Property>
+  <Property>
+    <name>New York Ave</name>
+    <color>orange</color>
+    <value>200</value>
+  </Property>
+  <Square>
+    <name>Free Parking</name>
+  </Square>
+  <Property>
+    <name>Kentucky Ave</name>
+    <color>red</color>
+    <value>220</value>
+  </Property>
+  <Square>
+    <name>empty 4</name>
+  </Square>
+  <Property>
+    <name>Indiana Ave</name>
+    <color>red</color>
+    <value>220</value>
+  </Property>
+  <Property>
+    <name>Illinois Ave</name>
+    <color>red</color>
+    <value>220</value>
+  </Property>
+  <Railroad>
+    <name>B. &amp; O. Railroad</name>
+    <value>200</value>
+  </Railroad>
+  <Property>
+    <name>Atlantic Ave</name>
+    <color>yellow</color>
+    <value>260</value>
+  </Property>
+  <Property>
+    <name>Ventnor Ave</name>
+    <color>yellow</color>
+    <value>260</value>
+  </Property>
+  <Utility>
+    <name>Water Works</name>
+    <value>150</value>
+  </Utility>
+  <Property>
+    <name>Marvin Gardens</name>
+    <color>yellow</color>
+    <value>280</value>
+  </Property>
+  <Property>
+    <name>Pacific Ave</name>
+    <color>green</color>
+    <value>300</value>
+  </Property>
+  <Property>
+    <name>North Carolina Ave</name>
+    <color>green</color>
+    <value>300</value>
+  </Property>
+  <Square>
+    <name>empty 5</name>
+  </Square>
+  <Property>
+    <name>Pennsylvania Ave</name>
+    <color>green</color>
+    <value>320</value>
+  </Property>
+  <Railroad>
+    <name>Short Line</name>
+    <value>200</value>
+  </Railroad>
+  <Square>
+    <name>empty 6</name>
+  </Square>
+  <Property>
+    <name>Park Place</name>
+    <color>blue</color>
+    <value>350</value>
+  </Property>
+  <Square>
+    <name>Luxury Tax</name>
+  </Square>
+  <Property>
+    <name>Boardwalk</name>
+    <color>blue</color>
+    <value>400</value>
+  </Property>
+  <Utility>
+    <name>Electric Company</name>
+    <value>150</value>
+  </Utility>
+</board>
