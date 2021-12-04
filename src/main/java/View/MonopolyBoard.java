@@ -14,10 +14,14 @@ import java.io.Serializable;
 class MonopolyBoard extends JPanel implements Serializable {
     private Image image;
 
-    public MonopolyBoard() {
+    public MonopolyBoard(String boardType) {
+        setBackgroundFromFileName(boardType);
+    }
+
+    public void setBackgroundFromFileName(String boardType){
         this.setSize(950, 560);
         try {
-            InputStream iS = this.getClass().getClassLoader().getResourceAsStream("Monopoly.png");
+            InputStream iS = this.getClass().getClassLoader().getResourceAsStream(boardType);
             BufferedImage loadedImage = ImageIO.read(iS);
             image = loadedImage.getScaledInstance(935, 430, Image.SCALE_AREA_AVERAGING);
         } catch (IOException ex) {

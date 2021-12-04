@@ -62,7 +62,7 @@ public class View extends JFrame implements ModelUpdateListener {
         //The layered pane will have multiple layers in order for us to overlay components
         JLayeredPane jLayeredPane = new JLayeredPane();
         jLayeredPane.setSize(950, 550);
-        monopolyBoard = new MonopolyBoard();
+        monopolyBoard = new MonopolyBoard(this.gameModel.getBoard().getBoardBackgroundFileName());
         jLayeredPane.add(monopolyBoard, JLayeredPane.DEFAULT_LAYER);
 
         gameModel.addView(this);
@@ -136,6 +136,10 @@ public class View extends JFrame implements ModelUpdateListener {
         this.setResizable(false);
         this.setSize(950, 650);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    public void setBackground(){
+        this.monopolyBoard.setBackgroundFromFileName(this.gameModel.getBoard().getBoardBackgroundFileName());
     }
 
 
@@ -327,6 +331,24 @@ public class View extends JFrame implements ModelUpdateListener {
             return choice;
         }
         return 0;
+    }
+
+    public String customBoardRequest() {
+        String[] choices = new String[]{"Original Board", "Tour De France", "Custom Board", };
+        String choice = askUserChoiceOfBoard(choices);
+        return choice;
+    }
+
+    static String askUserChoiceOfBoard(String[] choices) {
+        String s = (String) JOptionPane.showInputDialog(
+                null,
+                "Which Board would you like to play on?",
+                "Select the Board!",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                choices,
+                choices[0]);
+        return s;
     }
 
     /*

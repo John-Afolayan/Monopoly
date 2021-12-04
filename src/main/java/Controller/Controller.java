@@ -13,6 +13,7 @@ public class Controller implements ActionListener, Serializable {
     View gameView;
     Game gameModel;
     int numberOfHumanPlayers, numberOfAIPlayers, initialNumberOfHumanPlayers, totalPlayerAmount;
+    String customBoardChoice;
     private static final String newGame = "New Game", rollDie = "Roll Die", buy = "Buy", passTurn = "Pass Turn", state = "State", bsHouse = "Buy/Sell House", bsHotel = "Buy/Sell Hotel", quit = "Quit Game";
 
     public Controller(Game gameModel, View gameView) {
@@ -24,6 +25,14 @@ public class Controller implements ActionListener, Serializable {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case newGame:
+                customBoardChoice= gameView.customBoardRequest();
+                try {
+                    gameModel.setBoard(customBoardChoice);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(gameView, "There was an error getting the board.");
+                }
+
                 initialNumberOfHumanPlayers = gameView.numberOfPlayersRequest();
                 numberOfHumanPlayers = initialNumberOfHumanPlayers;
                 numberOfAIPlayers= gameView.numberOfAIPlayersRequest(numberOfHumanPlayers);
