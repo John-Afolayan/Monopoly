@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <board>
+    <Currency>€</Currency>
     <Board>
         <Square>Square</Square>
         <name>Go!</name>
