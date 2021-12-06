@@ -266,7 +266,7 @@ public class Game implements Serializable {
          */
         this.currentPlayerInt = (this.currentPlayerInt == (this.totalNumberOfPlayers - 1)) ? 0 : this.currentPlayerInt + 1;
         this.currentPlayer = this.players.get(this.currentPlayerInt);
-        for(ModelUpdateListener v: this.views) {
+        for(ModelUpdateListener v: views) {
             v.passTurn(getCurrentPlayer().getPlayerNumber());
             while (isPlayerAnAI()){
                 for (ModelUpdateListener vw: views){
@@ -1472,6 +1472,7 @@ public class Game implements Serializable {
                     int rent = getRailroadRent();
                     this.taxRailroad(rent);
                     passTurn();
+
                 }
 
             }else if (getBoard().getIndex(getCurrentPlayer().getPosition()) instanceof Square){
