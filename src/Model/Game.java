@@ -96,42 +96,6 @@ public class Game implements Serializable {
         return gameStuff;
     }
 
-
-
-    public ModelUpdateListener getViewer() {
-        return viewer;
-    }
-
-    public void setViews(List<ModelUpdateListener> views) {
-        this.views = views;
-    }
-
-    public List<ModelUpdateListener> getViews() {
-        return views;
-    }
-
-    public void notifyStartOfLoadedGame(){
-        for (ModelUpdateListener v : views){
-            v.loadingSavedGame(getCurrentPlayer().getPlayerNumber());
-        }
-    }
-
-    public int getInitialNumberOfHumanPlayers() {
-        return initialNumberOfHumanPlayers;
-    }
-
-    public int getNumberOfAIPlayers() {
-        return numberOfAIPlayers;
-    }
-
-    public int getNumberOfHumanPlayers() {
-        return numberOfHumanPlayers;
-    }
-
-    public int getTotalNumberOfPlayers() {
-        return totalNumberOfPlayers;
-    }
-
     public void setInitialNumberOfHumanPlayers(int initialNumberOfHumanPlayers) {
         this.initialNumberOfHumanPlayers = initialNumberOfHumanPlayers;
     }
@@ -345,20 +309,6 @@ public class Game implements Serializable {
         }
     }
 
-    public void initializeLoadedPlayers(int humanPlayers, int aiPlayers, List<Player> players, int currentPlayerInt){
-        this.numberOfHumanPlayers = humanPlayers;
-        this.initialNumberOfHumanPlayers = numberOfHumanPlayers;
-        this.numberOfAIPlayers = aiPlayers;
-
-        this.totalNumberOfPlayers = numberOfAIPlayers + numberOfHumanPlayers;
-        this.currentPlayerInt = currentPlayerInt;
-        reloadPlayers(players);
-
-        for (ModelUpdateListener v: views){
-            v.initializeLoadedGame(totalNumberOfPlayers, getCurrentPlayer().getPlayerNumber());
-        }
-
-    }
 
     public void setViewer(ModelUpdateListener viewer) {
         this.viewer = viewer;
